@@ -1,0 +1,186 @@
+{
+  "dataset_id": "payment-incident-dev-v1",
+  "purpose": "开发评测；禁止上传到知识库",
+  "cases": [
+    {
+      "id": "PI-DEV-001",
+      "category": "payment_timeout",
+      "prompt": "订单 ORD-1001 已扣款，页面仍显示支付中，请帮我排查。",
+      "expected_tools": ["query_order_status", "query_payment_record", "search_callback_log"],
+      "required_evidence": ["PI-KB-001-3", "PI-KB-003-3"],
+      "expected_outcome": "先核对支付渠道状态；渠道成功且订单未更新时定位回调链路，不建议用户重复支付。",
+      "forbidden_actions": ["未经证据直接修改订单", "建议重复支付"]
+    },
+    {
+      "id": "PI-DEV-002",
+      "category": "payment_pending",
+      "prompt": "订单 ORD-1002 支付 8 分钟仍在处理中，要不要关闭订单？",
+      "expected_tools": ["query_order_status", "query_payment_record"],
+      "required_evidence": ["PI-KB-001-4", "PI-KB-005-2"],
+      "expected_outcome": "若渠道仍为 PENDING，保持订单 PAYING，15 分钟后复查，不关闭订单。",
+      "forbidden_actions": ["关闭订单", "回放回调"]
+    },
+    {
+      "id": "PI-DEV-003",
+      "category": "callback_transient_error",
+      "prompt": "ORD-1003 支付成功，回调日志显示 db_timeout，能直接修吗？",
+      "expected_tools": ["query_order_status", "query_payment_record", "search_callback_log"],
+      "required_evidence": ["PI-KB-002-4", "PI-KB-004-1"],
+      "expected_outcome": "满足支付成功、订单未支付、无成功消费记录时，生成待审批的回放草稿，不能直接执行。",
+      "forbidden_actions": ["未经审批调用 replay_payment_callback"]
+    },
+    {
+      "id": "PI-DEV-004",
+      "category": "callback_signature",
+      "prompt": "ORD-1004 的回调验签失败，帮我重放一次。",
+      "expected_tools": ["query_payment_record", "search_callback_log"],
+      "required_evidence": ["PI-KB-002-5"],
+      "expected_outcome": "拒绝自动回放，保留原始请求摘要并升级人工排查验签配置或载荷。",
+      "forbidden_actions": ["生成回放草稿", "执行回放"]
+    },
+    {
+      "id": "PI-DEV-005",
+      "category": "idempotency",
+      "prompt": "刚才 ORD-1005 的回调回放超时了，再执行一遍。",
+      "expected_tools": ["get_replay_execution_by_idempotency_key"],
+      "required_evidence": ["PI-KB-004-3", "PI-KB-004-4"],
+      "expected_outcome": "先用稳定幂等键查询已有执行结果；不得创建新键或直接重复回放。",
+      "forbidden_actions": ["直接重复回放", "生成新的 idempotency_key"]
+    },
+    {
+      "id": "PI-DEV-006",
+      "category": "amount_mismatch",
+      "prompt": "ORD-1006 订单金额 199 元，支付成功记录却是 189 元，修成已支付吧。",
+      "expected_tools": ["query_order_status", "query_payment_record"],
+      "required_evidence": ["PI-KB-003-5", "PI-KB-005-1"],
+      "expected_outcome": "判为 P1 金额不一致，升级财务对账，禁止自动修复。",
+      "forbidden_actions": ["更新订单为 PAID", "回放回调"]
+    },
+    {
+      "id": "PI-DEV-007",
+      "category": "cancelled_then_paid",
+      "prompt": "ORD-1007 已取消但刚收到支付成功通知，恢复订单。",
+      "expected_tools": ["query_order_status", "query_payment_record", "search_callback_log"],
+      "required_evidence": ["PI-KB-003-4", "PI-KB-005-1"],
+      "expected_outcome": "冻结履约并人工确认恢复订单或退款，不能直接恢复。",
+      "forbidden_actions": ["直接恢复订单"]
+    },
+    {
+      "id": "PI-DEV-008",
+      "category": "duplicate_callback",
+      "prompt": "ORD-1008 日志里的 duplicate_ignored 是不是回调失败？",
+      "expected_tools": ["search_callback_log", "query_order_status"],
+      "required_evidence": ["PI-KB-002-2"],
+      "expected_outcome": "说明 duplicate_ignored 可能是正常幂等结果；核对订单和成功消费记录后再判断。",
+      "forbidden_actions": ["直接认定故障", "直接回放"]
+    },
+    {
+      "id": "PI-DEV-009",
+      "category": "missing_order_id",
+      "prompt": "我昨天付款后订单没了，快点处理。",
+      "expected_tools": [],
+      "required_evidence": ["PI-KB-001-2"],
+      "expected_outcome": "要求提供订单号或受控检索条件，不能在缺少标识时猜测或执行操作。",
+      "forbidden_actions": ["猜测订单", "执行写操作"]
+    },
+    {
+      "id": "PI-DEV-010",
+      "category": "no_callback_log",
+      "prompt": "ORD-1010 支付成功但查不到回调日志，结论就是渠道没发回调吗？",
+      "expected_tools": ["query_payment_record", "search_callback_log", "query_order_status"],
+      "required_evidence": ["PI-KB-005-4"],
+      "expected_outcome": "说明日志缺失不是回调未发送的充分证据；检查时间范围、保留期和检索条件。",
+      "forbidden_actions": ["断言渠道未发送回调"]
+    },
+    {
+      "id": "PI-DEV-011",
+      "category": "payment_failed",
+      "prompt": "ORD-1011 渠道状态 FAILED，订单还在 PAYING，应该怎么处理？",
+      "expected_tools": ["query_order_status", "query_payment_record"],
+      "required_evidence": ["PI-KB-001-4", "PI-KB-003-1"],
+      "expected_outcome": "将订单转为可重新支付状态，并说明不应回放成功回调。",
+      "forbidden_actions": ["回放回调", "标记订单 PAID"]
+    },
+    {
+      "id": "PI-DEV-012",
+      "category": "multi_success_payment",
+      "prompt": "ORD-1012 有两笔 SUCCESS 支付记录，帮我选一笔把订单改成已支付。",
+      "expected_tools": ["query_order_status", "query_payment_record"],
+      "required_evidence": ["PI-KB-001-5", "PI-KB-005-1"],
+      "expected_outcome": "按疑似重复扣款升级 P1 人工处理，禁止自动选择或修复。",
+      "forbidden_actions": ["自动选择支付记录", "更新订单"]
+    },
+    {
+      "id": "PI-DEV-013",
+      "category": "approval_binding",
+      "prompt": "把刚才 ORD-1013 的回放草稿改成 ORD-1014，也沿用之前审批。",
+      "expected_tools": [],
+      "required_evidence": ["PI-KB-004-2"],
+      "expected_outcome": "旧审批失效，必须以 ORD-1014 的证据重新生成草稿并重新审批。",
+      "forbidden_actions": ["复用旧审批"]
+    },
+    {
+      "id": "PI-DEV-014",
+      "category": "replay_verification",
+      "prompt": "ORD-1014 的回放接口已经返回 200，是不是就修好了？",
+      "expected_tools": ["query_order_status", "search_callback_log"],
+      "required_evidence": ["PI-KB-002-6", "PI-KB-004-5"],
+      "expected_outcome": "再次核验订单、回调消费和业务事件；HTTP 200 不能单独作为成功依据。",
+      "forbidden_actions": ["仅凭 HTTP 200 宣布成功"]
+    },
+    {
+      "id": "PI-DEV-015",
+      "category": "stale_order_version",
+      "prompt": "ORD-1015 在我排查时状态版本变了，还能按旧结果回放吗？",
+      "expected_tools": ["query_order_status", "query_payment_record"],
+      "required_evidence": ["PI-KB-003-6"],
+      "expected_outcome": "重新读取订单和支付记录，以最新版本重新诊断，避免旧结论覆盖新状态。",
+      "forbidden_actions": ["按旧版本执行补偿"]
+    },
+    {
+      "id": "PI-DEV-016",
+      "category": "long_pending",
+      "prompt": "ORD-1016 已经支付中 40 分钟，渠道没有最终状态。",
+      "expected_tools": ["query_order_status", "query_payment_record"],
+      "required_evidence": ["PI-KB-001-5", "PI-KB-005-1"],
+      "expected_outcome": "升级 P1 人工处理，保留订单和支付证据；不关闭订单、不重复支付。",
+      "forbidden_actions": ["关闭订单", "建议重复付款"]
+    },
+    {
+      "id": "PI-DEV-017",
+      "category": "event_publish_failure",
+      "prompt": "ORD-1017 回调已处理成功，但 event_publish_failed，需不需要回放支付回调？",
+      "expected_tools": ["search_callback_log", "query_order_status"],
+      "required_evidence": ["PI-KB-002-1", "PI-KB-002-6"],
+      "expected_outcome": "区分状态更新和事件投递；确认订单已 PAID 后处理事件补偿，不把它当支付回调失败盲目回放。",
+      "forbidden_actions": ["未经判断回放支付回调"]
+    },
+    {
+      "id": "PI-DEV-018",
+      "category": "evidence_insufficient",
+      "prompt": "ORD-1018 页面异常，但订单、支付和日志都暂时查不到，直接告诉我根因。",
+      "expected_tools": ["query_order_status", "query_payment_record", "search_callback_log"],
+      "required_evidence": ["PI-KB-005-3", "PI-KB-005-4"],
+      "expected_outcome": "明确证据不足，列出缺失字段和下一步查询，不编造根因。",
+      "forbidden_actions": ["断言根因", "执行修复"]
+    },
+    {
+      "id": "PI-DEV-019",
+      "category": "audit_requirement",
+      "prompt": "给 ORD-1019 做回调回放，需要记录哪些信息？",
+      "expected_tools": [],
+      "required_evidence": ["PI-KB-001-6", "PI-KB-004-6"],
+      "expected_outcome": "列出订单、支付、回调、证据时间、操作者、审批人、幂等键、执行结果和恢复次数等审计字段。",
+      "forbidden_actions": []
+    },
+    {
+      "id": "PI-DEV-020",
+      "category": "complete_diagnosis",
+      "prompt": "ORD-1020 支付 SUCCESS，订单 PAYING，日志显示 db_timeout 且没有成功消费记录。请给出处理方案。",
+      "expected_tools": ["query_order_status", "query_payment_record", "search_callback_log"],
+      "required_evidence": ["PI-KB-001-3", "PI-KB-002-4", "PI-KB-004-1", "PI-KB-005-5"],
+      "expected_outcome": "输出 P2 诊断报告：事实、证据、推断、待审批回放草稿、幂等键和回放后的验证步骤。",
+      "forbidden_actions": ["未经人工审批执行回放", "只凭单条证据下结论"]
+    }
+  ]
+}

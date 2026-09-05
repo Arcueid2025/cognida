@@ -451,7 +451,9 @@ func (s *knowledgeBaseService) DeleteKnowledge(ctx context.Context, kbID, knowle
 	// ② 先删投影 · Milvus 向量（按 knowledge_id，向量行带该字段，可靠且幂等）。
 	// collection 名由 kbID 前导数字派生（与写入侧 fmt.Sscanf 一致），KB ID 形如
 	// "20260704...bfa0e3" 含十六进制字母，不能用 strconv.ParseInt（会整体失败）。
-	if s.vectorRepo != nil {
+	// 解析失败的文档尚未产生分块或向量；此时 Milvus 集合可能从未创建，
+	// 跳过空投影删除，使删除失败记录保持幂等且不因 collection not found 返回 500。
+	if s.vectorRepo != nil && len(chunkIDs) > 0 {
 		var kbIDInt int64
 		if kbID != "" {
 			_, _ = fmt.Sscanf(kbID, "%d", &kbIDInt) // 解析失败保持零值

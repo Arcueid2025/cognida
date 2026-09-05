@@ -13,11 +13,12 @@ WORKDIR /src
 COPY go.mod go.sum ./
 RUN go mod download
 
-# 拷贝源码并编译两个入口
+# 拷贝源码并编译服务、迁移和 Milvus 初始化工具。
 COPY . .
 ENV CGO_ENABLED=0 GOOS=linux
 RUN go build -trimpath -ldflags="-s -w" -o /out/server ./cmd/server \
- && go build -trimpath -ldflags="-s -w" -o /out/migrate-db ./cmd/migrate-db
+ && go build -trimpath -ldflags="-s -w" -o /out/migrate-db ./cmd/migrate-db \
+ && go build -trimpath -ldflags="-s -w" -o /out/provision-milvus ./cmd/provision-milvus
 
 # ---------- 运行阶段 ----------
 FROM debian:bookworm-slim AS runtime
@@ -27,6 +28,7 @@ WORKDIR /app
 
 COPY --from=builder /out/server /app/server
 COPY --from=builder /out/migrate-db /app/migrate-db
+COPY --from=builder /out/provision-milvus /app/provision-milvus
 
 # 非 root 运行；/data/uploads 为与 Python 服务共享的上传目录挂载点
 RUN useradd -m -u 1000 appuser \

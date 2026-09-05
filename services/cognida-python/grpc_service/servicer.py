@@ -418,7 +418,9 @@ def create_grpc_server(port: int = 50051, include_analytics: bool = False):
         logger = get_logger(__name__)
         logger.warning(f"Failed to register QualityService", error=str(e))
 
-    server.add_insecure_port(f'127.0.0.1:{port}')
+    # Go 后端运行在独立容器中，必须监听容器网络地址；使用 127.0.0.1 会导致
+    # `cognida-go -> cognida-python:50051` 的文档解析 gRPC 连接被拒绝。
+    server.add_insecure_port(f'0.0.0.0:{port}')
     return server
 
 

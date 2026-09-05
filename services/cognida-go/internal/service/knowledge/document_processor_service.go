@@ -429,30 +429,33 @@ func (s *documentProcessorService) getSource(req *ProcessDocumentRequest) string
 // chunk_id 即不可得，故图谱清理必须在最前。任一步失败即返回错误，调用方中止本次重处理，
 // 避免"清一半 + 追加新分块"造成的混叠。
 func (s *documentProcessorService) purgeExistingDocument(ctx context.Context, tenantID int64, kbID, knowledgeID string) error {
-	// 1. 取旧分块 id（含禁用），供图谱按 chunk_id 精确清理（节点存 chunk_id 而非 knowledge_id）
-	if s.graphRepo != nil && s.chunkRepo != nil {
+	// 1. 取旧分块 id（含禁用），供图谱和向量投影精确清理。上传接口会先创建
+	// knowledge 记录再处理，因此首处理时 DocumentID 非空但旧分块为 0；此时不应
+	// 操作尚未创建的 Milvus collection。
+	var oldChunkIDs []string
+	if s.chunkRepo != nil {
 		oldChunks, err := s.chunkRepo.FindByKnowledgeID(ctx, knowledgeID, false)
 		if err != nil {
 			return fmt.Errorf("加载旧分块失败: %w", err)
 		}
-		if len(oldChunks) > 0 {
-			chunkIDs := make([]string, 0, len(oldChunks))
-			for _, c := range oldChunks {
-				chunkIDs = append(chunkIDs, c.ID)
-			}
-			namespace := domain_knowledge.NameSpace{
-				TenantID:        fmt.Sprintf("%d", tenantID),
-				KnowledgeBaseID: kbID,
-				Knowledge:       knowledgeID,
-			}
-			if err := s.graphRepo.DeleteByChunkIDs(ctx, namespace, chunkIDs); err != nil {
-				return fmt.Errorf("清除旧图谱失败: %w", err)
-			}
+		oldChunkIDs = make([]string, 0, len(oldChunks))
+		for _, c := range oldChunks {
+			oldChunkIDs = append(oldChunkIDs, c.ID)
+		}
+	}
+	if s.graphRepo != nil && len(oldChunkIDs) > 0 {
+		namespace := domain_knowledge.NameSpace{
+			TenantID:        fmt.Sprintf("%d", tenantID),
+			KnowledgeBaseID: kbID,
+			Knowledge:       knowledgeID,
+		}
+		if err := s.graphRepo.DeleteByChunkIDs(ctx, namespace, oldChunkIDs); err != nil {
+			return fmt.Errorf("清除旧图谱失败: %w", err)
 		}
 	}
 
 	// 2. 删旧向量（按 knowledge_id，向量行带该字段）
-	if s.vectorRepo != nil {
+	if s.vectorRepo != nil && len(oldChunkIDs) > 0 {
 		var kbIDInt int64
 		if kbID != "" {
 			_, _ = fmt.Sscanf(kbID, "%d", &kbIDInt) // 解析失败保持零值

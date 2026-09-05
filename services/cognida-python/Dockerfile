@@ -13,7 +13,7 @@ COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
 WORKDIR /app
 
 # 复制依赖文件
-COPY pyproject.toml ./
+COPY pyproject.toml uv.lock README.md ./
 
 # 创建虚拟环境并安装依赖
 RUN uv sync --frozen --no-dev
@@ -44,7 +44,7 @@ COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
 WORKDIR /app
 
 # 复制依赖文件
-COPY pyproject.toml ./
+COPY pyproject.toml uv.lock README.md ./
 
 # 仅安装生产依赖
 RUN uv sync --frozen --no-dev --no-editable

@@ -75,6 +75,10 @@ services/cognida-python/data/
 
 # ---- 文档（本地留存，不纳入仓库；含 docs/openspec）----
 /docs/
+# 支付故障诊断 Agent 的可复现演示材料需要随源码版本管理。
+!/docs/
+!/docs/payment-incident/
+!/docs/payment-incident/**
 
 # ---- Claude Code 工具目录（hooks/skills/settings，本地留存，不纳入仓库）----
 /.claude/
