@@ -28,6 +28,7 @@ import (
 	"cognida/internal/model/conversation"
 	"cognida/internal/model/datasource"
 	evaluation2 "cognida/internal/model/evaluation"
+	"cognida/internal/model/incident"
 	"cognida/internal/model/knowledge"
 	"cognida/internal/model/llm"
 	quality3 "cognida/internal/model/quality"
@@ -106,9 +107,9 @@ func InitializeApp(db *gorm.DB, cfg *config.Config) (*App, error) {
 		return nil, err
 	}
 	chatConfig := ProvideChatConfig(cfg)
-	llmClient := ProvideLLMClient(chatConfig)
+	v := ProvideLLMClient(chatConfig)
 	idGenerator := ProvideIDGenerator()
-	documentProcessorService := ProvideDocumentProcessorService(knowledgeBaseRepository, knowledgeRepository, chunkRepository, vectorRepository, graphRepository, client, embedder, llmClient, idGenerator)
+	documentProcessorService := ProvideDocumentProcessorService(knowledgeBaseRepository, knowledgeRepository, chunkRepository, vectorRepository, graphRepository, client, embedder, v, idGenerator)
 	milvusRetriever := ProvideMilvusRetriever(embedder)
 	ragGraphRepository := ProvideRAGGraphRepository()
 	graphQueryRepository := ProvideGraphQueryRepository(db)
@@ -122,7 +123,7 @@ func InitializeApp(db *gorm.DB, cfg *config.Config) (*App, error) {
 	sessionService := ProvideSessionService(sessionRepository, messageRepository, retrievalSettingRepository)
 	modelRepository := ProvideModelRepository(db)
 	modelFactory := ProvideModelFactory()
-	chatService := ProvideChatService(llmClient, modelRepository, modelFactory)
+	chatService := ProvideChatService(v, modelRepository, modelFactory)
 	sessionHandler := ProvideSessionHandler(sessionService, chatService)
 	messageService := ProvideMessageService(messageRepository)
 	messageHandler := ProvideMessageHandler(messageService)
@@ -136,7 +137,7 @@ func InitializeApp(db *gorm.DB, cfg *config.Config) (*App, error) {
 	agentPersistenceService := ProvideAgentPersistenceService(sessionRepository, messageRepository)
 	agentHandler := ProvideAgentHandler(executeService, researchService, configService, progressService, agentPersistenceService, retrievalSettingRepository)
 	registryAgentHandler := ProvideRegistryAgentHandler(specRegistry)
-	llmChat := ProvideRAGLLMChat(llmClient)
+	llmChat := ProvideRAGLLMChat(v)
 	graphService := ProvideGraphService(graphRepository, graphQueryRepository, llmChat)
 	graphHandler := ProvideGraphHandler(graphService)
 	modelService := ProvideModelService(modelRepository, modelFactory)
@@ -180,12 +181,14 @@ func InitializeApp(db *gorm.DB, cfg *config.Config) (*App, error) {
 	traceRepository := ProvideTraceRepository(db)
 	auditHandler := ProvideAuditHandler(auditRepository, traceRepository)
 	traceHandler := ProvideTraceHandler(traceRepository)
+	incidentRepository := ProvidePaymentIncidentRepository(db)
+	paymentIncidentHandler := ProvidePaymentIncidentHandler(incidentRepository)
 	handler := ProvideWebHandler()
 	authMiddleware := ProvideAuthMiddleware(accountService)
 	tenantMiddleware := ProvideTenantMiddleware()
 	writer := ProvideAuditWriter(auditRepository)
 	auditMiddleware := ProvideAuditMiddleware(writer)
-	router := ProvideRouter(authHandler, knowledgeBaseHandler, sessionHandler, messageHandler, tenantHandler, agentHandler, registryAgentHandler, graphHandler, modelHandler, taskHandler, ragOptimizerHandler, guardrailHandler, evaluationHandler, qualityHandler, dataSourceHandler, semanticHandler, auditHandler, traceHandler, handler, authMiddleware, tenantMiddleware, auditMiddleware)
+	router := ProvideRouter(authHandler, knowledgeBaseHandler, sessionHandler, messageHandler, tenantHandler, agentHandler, registryAgentHandler, graphHandler, modelHandler, taskHandler, ragOptimizerHandler, guardrailHandler, evaluationHandler, qualityHandler, dataSourceHandler, semanticHandler, auditHandler, traceHandler, paymentIncidentHandler, handler, authMiddleware, tenantMiddleware, auditMiddleware)
 	corsMiddleware := ProvideCORSMiddleware()
 	recoveryMiddleware := ProvideRecoveryMiddleware()
 	loggerMiddleware := ProvideLoggerMiddleware()
@@ -682,14 +685,22 @@ func ProvideAuditRepository(db *gorm.DB) audit2.Repository {
 	return mysql.NewAuditRepository(db)
 }
 
+func ProvidePaymentIncidentRepository(db *gorm.DB) incident.Repository {
+	return mysql.NewPaymentIncidentRepository(db)
+}
+
+func ProvidePaymentIncidentHandler(repo incident.Repository) *handler.PaymentIncidentHandler {
+	return handler.NewPaymentIncidentHandler(repo)
+}
+
 // ProvideAuditWriter 提供审计异步批量写入器。
 // 后台 flush goroutine 在构造时启动，App.Shutdown 负责优雅收尾。
 func ProvideAuditWriter(repo audit2.Repository) *audit.Writer {
 	return audit.NewWriter(repo, audit.DefaultWriterConfig())
 }
 
-func ProvideAuditHandler(repo audit2.Repository, tracesRepo trace.Repository) *handler.AuditHandler {
-	return handler.NewAuditHandler(repo, tracesRepo)
+func ProvideAuditHandler(repo audit2.Repository, traces trace.Repository) *handler.AuditHandler {
+	return handler.NewAuditHandler(repo, traces)
 }
 
 func ProvideTraceRepository(db *gorm.DB) trace.Repository {
@@ -716,7 +727,7 @@ func ProvideKnowledgeBaseHandler(
 // ProvideRetrievalCapability 装配统一检索能力封装：Agent 路径与 REST /knowledge/search 共用。
 // 重排器已接线但默认关闭（GovernedQuery.EnableRerank 缺省 false），按需可插拔开启。
 func ProvideRetrievalCapability(retriever2 rag.Retriever, knowledgeRepo knowledge.KnowledgeRepository) *knowledge2.RetrievalCapability {
-	// 注入启用状态过滤器（MySQL 权威）：检索命中后回查 MySQL 剔除停用/已删条目。
+
 	return knowledge2.NewRetrievalCapability(retriever2, rag2.NewReranker()).WithEnabledFilter(knowledgeRepo)
 }
 
@@ -927,6 +938,7 @@ func ProvideRouter(
 	semanticHandler *handler.SemanticHandler,
 	auditHandler *handler.AuditHandler,
 	traceHandler *handler.TraceHandler,
+	paymentIncidentHandler *handler.PaymentIncidentHandler,
 	webHandler *web.Handler,
 	authMiddleware *middleware.AuthMiddleware,
 	tenantMiddleware *middleware.TenantMiddleware,
@@ -951,6 +963,7 @@ func ProvideRouter(
 		semanticHandler,
 		auditHandler,
 		traceHandler,
+		paymentIncidentHandler,
 		webHandler,
 		authMiddleware,
 		tenantMiddleware,

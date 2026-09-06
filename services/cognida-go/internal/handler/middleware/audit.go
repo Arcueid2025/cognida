@@ -26,9 +26,20 @@ type AuditMiddleware struct {
 	writer *auditsvc.Writer
 }
 
+const auditSnapshotKey = "audit_snapshot"
+
 // NewAuditMiddleware 创建请求审计中间件
 func NewAuditMiddleware(writer *auditsvc.Writer) *AuditMiddleware {
 	return &AuditMiddleware{writer: writer}
+}
+
+// SetAuditSnapshot attaches a deliberate, structured snapshot to the current request's
+// audit log. Callers must only use it for data they are authorized to retain; normal
+// request bodies are intentionally never captured by this middleware.
+func SetAuditSnapshot(c *gin.Context, snapshot map[string]interface{}) {
+	if c != nil && snapshot != nil {
+		c.Set(auditSnapshotKey, snapshot)
+	}
 }
 
 // Apply 应用中间件
@@ -97,6 +108,12 @@ func buildAuditLog(c *gin.Context, path string, durationMs int) *auditmodel.Audi
 	}
 	if raw := c.Request.URL.RawQuery; raw != "" {
 		details["query"] = raw
+	}
+	// 仅处理 handler 显式标记的结构化快照。避免通用审计中间件意外记录请求体。
+	if snapshot, exists := c.Get(auditSnapshotKey); exists {
+		if structured, ok := snapshot.(map[string]interface{}); ok {
+			details["snapshot"] = structured
+		}
 	}
 	if b, err := json.Marshal(details); err == nil {
 		entry.Details = string(b)

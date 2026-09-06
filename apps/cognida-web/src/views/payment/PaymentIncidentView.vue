@@ -27,6 +27,28 @@
         <h2>建议核验顺序</h2>
         <ol><li v-for="item in checklist" :key="item">{{ item }}</li></ol>
       </section>
+      <section class="recommendation" aria-live="polite">
+        <div class="recommendation-title"><h2>受证据约束的处置建议</h2><span>仅供人工核验</span></div>
+        <dl>
+          <dt>故障判断</dt><dd>{{ recommendation.judgment }}</dd>
+          <dt>已知事实</dt><dd><ul><li v-for="fact in recommendation.knownFacts" :key="fact">{{ fact }}</li></ul></dd>
+          <dt>待核验项</dt><dd><ul><li v-for="item in recommendation.pendingChecks" :key="item">{{ item }}</li></ul></dd>
+          <dt>建议动作</dt><dd>{{ recommendation.recommendedAction }}</dd>
+          <dt>风险提示</dt><dd class="risk-notice">{{ recommendation.riskNotice }}</dd>
+          <dt>引用证据</dt><dd>{{ recommendation.evidenceReferences.length ? recommendation.evidenceReferences.join('、') : '无可追溯引用' }}</dd>
+        </dl>
+      </section>
+      <section class="case-panel">
+        <div class="case-title"><div><h2>人工案件</h2><p>创建后由人工负责状态流转；不会执行补单或回放。</p></div><button :disabled="creatingCase || !searched" @click="createCase">{{ creatingCase ? '创建中…' : '创建案件' }}</button></div>
+        <p v-if="caseMessage" class="case-message">{{ caseMessage }}</p>
+        <div class="case-title case-list-title"><h3>当前租户案件</h3><button class="secondary" :disabled="loadingCases" @click="loadCases">{{ loadingCases ? '刷新中…' : '刷新案件' }}</button></div>
+        <p v-if="!incidents.length" class="empty">尚未创建案件。</p>
+        <article v-for="item in incidents" :key="item.id" class="incident-card">
+          <div><strong>{{ item.order_id || '未提供订单号' }}</strong><span>{{ incidentStatusLabel(item.status) }} · {{ item.priority }}</span></div>
+          <p>{{ item.incident_type }} · {{ item.id }}</p>
+          <div class="transition-actions"><button v-for="status in availableIncidentTransitions(item.status)" :key="status" class="secondary" :disabled="transitioningId === item.id" @click="transitionCase(item.id, status)">转为{{ incidentStatusLabel(status) }}</button></div>
+        </article>
+      </section>
       <section class="evidence">
         <div class="evidence-title"><h2>检索证据</h2><span>{{ results.length }} 条</span></div>
         <p v-if="!results.length" class="empty">未找到可直接支持本次判断的证据，请转人工处理。</p>
@@ -45,7 +67,10 @@ import { storeToRefs } from 'pinia'
 import { knowledgeApi } from '@/api/knowledge'
 import { useKnowledgeStore } from '@/stores/knowledge'
 import type { SearchResult } from '@/types'
-import { buildInvestigationChecklist, paymentStarterQuestions, relativeMatchPercent, splitByQueryTerms } from '@/features/payment-incident/investigation'
+import type { PaymentIncident, PaymentIncidentStatus } from '@/types'
+import { buildEvidenceBoundRecommendation, buildInvestigationChecklist, paymentStarterQuestions, relativeMatchPercent, splitByQueryTerms } from '@/features/payment-incident/investigation'
+import { availableIncidentTransitions, extractOrderID, incidentStatusLabel, inferIncidentType } from '@/features/payment-incident/cases'
+import { paymentIncidentApi } from '@/api/payment-incident'
 
 const store = useKnowledgeStore()
 const { knowledgeBases } = storeToRefs(store)
@@ -55,11 +80,35 @@ const results = ref<SearchResult[]>([])
 const loading = ref(false)
 const searched = ref(false)
 const error = ref('')
+const incidents = ref<PaymentIncident[]>([])
+const creatingCase = ref(false)
+const loadingCases = ref(false)
+const transitioningId = ref('')
+const caseMessage = ref('')
 const checklist = computed(() => buildInvestigationChecklist(query.value, results.value))
+const recommendation = computed(() => buildEvidenceBoundRecommendation(query.value, results.value))
 const scopedKbIds = computed(() => kbId.value ? [kbId.value] : knowledgeBases.value.map(kb => kb.id))
 const maxScore = computed(() => Math.max(0, ...results.value.map(item => item.score)))
 
-onMounted(() => { void store.loadKnowledgeBases() })
+onMounted(() => { void store.loadKnowledgeBases(); void loadCases() })
+
+async function loadCases() {
+  loadingCases.value = true
+  try { const response = await paymentIncidentApi.list({ page: 1, page_size: 20 }); incidents.value = response.data?.items ?? [] } finally { loadingCases.value = false }
+}
+
+async function createCase() {
+  creatingCase.value = true; caseMessage.value = ''
+  try {
+    const response = await paymentIncidentApi.create({ order_id: extractOrderID(query.value), incident_type: inferIncidentType(query.value), priority: 'P2' })
+    caseMessage.value = `案件 ${response.data?.id ?? ''} 已创建，默认状态为待核验。`; await loadCases()
+  } catch (e) { caseMessage.value = e instanceof Error ? e.message : '案件创建失败。' } finally { creatingCase.value = false }
+}
+
+async function transitionCase(id: string, status: PaymentIncidentStatus) {
+  transitioningId.value = id; caseMessage.value = ''
+  try { await paymentIncidentApi.transition(id, status); caseMessage.value = `案件已更新为${incidentStatusLabel(status)}。`; await loadCases() } catch (e) { caseMessage.value = e instanceof Error ? e.message : '案件状态更新失败。' } finally { transitioningId.value = '' }
+}
 
 async function search() {
   if (scopedKbIds.value.length === 0) {
@@ -71,7 +120,7 @@ async function search() {
   error.value = ''
   try {
     const response = await knowledgeApi.search({
-      query: query.value.trim(), kb_ids: scopedKbIds.value, top_k: 5, retrieval_mode: 'hybrid'
+      query: query.value.trim(), kb_ids: scopedKbIds.value, top_k: 5, retrieval_mode: 'hybrid', save_assessment: true
     })
     results.value = response.data?.items ?? []
     searched.value = true
@@ -87,11 +136,13 @@ async function search() {
 .payment-workbench { max-width: 960px; margin: 0 auto; color: var(--text-primary); }
 header { margin-bottom: 24px; } h1, h2, p { margin: 0; } h1 { font-size: 28px; margin: 4px 0 8px; } header p:last-child { color: var(--text-muted); }
 .eyebrow { color: var(--primary); font: 12px var(--font-mono); letter-spacing: .12em; }
-.query-card, .checklist, .evidence { padding: 20px; border: 1px solid var(--color-border-subtle); border-radius: var(--radius-md); background: var(--bg-tertiary); }
+.query-card, .checklist, .recommendation, .case-panel, .evidence { padding: 20px; border: 1px solid var(--color-border-subtle); border-radius: var(--radius-md); background: var(--bg-tertiary); }
 label { display: block; font-weight: 600; margin-bottom: 8px; } textarea, select { box-sizing: border-box; width: 100%; border: 1px solid var(--color-border-subtle); border-radius: 6px; padding: 10px; background: var(--bg-primary); color: var(--text-primary); font: inherit; }
 .actions { display: flex; gap: 10px; margin-top: 12px; } .actions select { flex: 1; } button { border: 0; border-radius: 6px; padding: 9px 13px; cursor: pointer; background: var(--primary); color: var(--on-primary); font: inherit; } button:disabled { cursor: not-allowed; opacity: .6; }
 .quick-questions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; } .quick-questions button { background: var(--bg-elevated); color: var(--text-secondary); font-size: 12px; }
-.checklist, .evidence { margin-top: 18px; } ol { margin-bottom: 0; padding-left: 20px; } li + li { margin-top: 8px; } .evidence-title, .evidence-card > div { display: flex; justify-content: space-between; gap: 12px; } .evidence-title span, .evidence-card span { color: var(--text-muted); font: 12px var(--font-mono); }
+.checklist, .recommendation, .case-panel, .evidence { margin-top: 18px; } ol { margin-bottom: 0; padding-left: 20px; } li + li { margin-top: 8px; } .evidence-title, .recommendation-title, .case-title, .incident-card > div, .evidence-card > div { display: flex; justify-content: space-between; gap: 12px; } .evidence-title span, .recommendation-title span, .incident-card span, .evidence-card span { color: var(--text-muted); font: 12px var(--font-mono); }
+.case-title h2, .case-title h3, .case-title p { margin: 0; } .case-title p, .incident-card p, .case-message { color: var(--text-muted); font-size: 13px; } .case-list-title { margin-top: 18px; align-items: center; } .secondary { background: var(--bg-elevated); color: var(--text-secondary); } .incident-card { margin-top: 10px; padding: 12px; background: var(--bg-primary); border-left: 3px solid var(--primary); } .incident-card p { margin: 6px 0; font-family: var(--font-mono); } .transition-actions { display: flex; gap: 8px; flex-wrap: wrap; } .transition-actions button { font-size: 12px; padding: 6px 9px; }
+.recommendation dl { display: grid; grid-template-columns: 112px 1fr; gap: 12px 16px; margin: 16px 0 0; } .recommendation dt { color: var(--text-muted); font-weight: 600; } .recommendation dd { margin: 0; line-height: 1.6; } .recommendation ul { margin: 0; padding-left: 20px; } .risk-notice { color: var(--danger); }
 .evidence-card { margin-top: 12px; padding: 14px; border-left: 3px solid var(--primary); background: var(--bg-primary); } .evidence-card p { margin-top: 8px; white-space: pre-wrap; line-height: 1.65; } mark { padding: 0 2px; border-radius: 2px; background: rgba(156, 180, 205, .24); color: inherit; } .empty, .error { margin-top: 16px; color: var(--text-muted); } .error { color: var(--danger); }
-@media (max-width: 640px) { .actions { flex-direction: column; } }
+@media (max-width: 640px) { .actions { flex-direction: column; } .recommendation dl { grid-template-columns: 1fr; gap: 4px; } }
 </style>

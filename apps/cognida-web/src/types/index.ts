@@ -357,6 +357,8 @@ export interface SearchRequest {
   min_score?: number
   retrieval_mode?: 'vector' | 'bm25' | 'hybrid'
   enable_rerank?: boolean
+  // 仅支付故障核验台使用：将问题、证据快照和建议规则版本写入审计日志。
+  save_assessment?: boolean
 }
 
 export interface SearchResult {
@@ -374,6 +376,29 @@ export interface SearchResponse {
   total: number
   items: SearchResult[]
   has_answer?: boolean
+}
+
+export type PaymentIncidentStatus = 'pending_verification' | 'investigating' | 'awaiting_confirmation' | 'resolved' | 'escalated'
+
+export interface PaymentIncident {
+  id: string
+  tenant_id: number
+  created_by: number
+  order_id: string
+  channel: string
+  incident_type: string
+  priority: string
+  status: PaymentIncidentStatus
+  assessment_request_id: string
+  created_at: string
+  updated_at: string
+}
+
+export interface PaymentIncidentListResponse {
+  items: PaymentIncident[]
+  total: number
+  page: number
+  size: number
 }
 
 // ============ FAQ相关 ============

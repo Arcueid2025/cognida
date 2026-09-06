@@ -25,6 +25,7 @@ from typing import Any
 
 EVIDENCE_ID = re.compile(r"【(PI-KB-\d+-\d+)】")
 DEFAULT_MODES = ("vector", "bm25", "hybrid")
+RERANK_VARIANTS = {"off": False, "on": True}
 
 
 def parse_args() -> argparse.Namespace:
@@ -41,6 +42,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--top-k", type=int, default=5, help="每题返回片段数，默认 5")
     parser.add_argument("--min-score", type=float, default=0.0, help="透传至检索 API 的最低分")
     parser.add_argument("--modes", default=",".join(DEFAULT_MODES), help="逗号分隔：vector,bm25,hybrid")
+    parser.add_argument(
+        "--rerank-variants",
+        default="off",
+        help="逗号分隔：off,on；使用 off,on 对同一检索配置做重排 A/B 对比",
+    )
     parser.add_argument("--timeout", type=float, default=60, help="单次 API 调用超时（秒）")
     parser.add_argument("--output", type=Path, required=True, help="结果 JSON 输出路径（建议 evaluation/results/）")
     return parser.parse_args()
@@ -60,7 +66,9 @@ def load_cases(path: Path) -> tuple[str, list[dict[str, Any]]]:
     return str(data.get("dataset_id", path.stem)), cases
 
 
-def call_search(args: argparse.Namespace, prompt: str, mode: str) -> tuple[list[dict[str, Any]], float, str | None]:
+def call_search(
+    args: argparse.Namespace, prompt: str, mode: str, enable_rerank: bool = False
+) -> tuple[list[dict[str, Any]], float, str | None]:
     body = json.dumps(
         {
             "kb_ids": [args.kb_id],
@@ -68,7 +76,7 @@ def call_search(args: argparse.Namespace, prompt: str, mode: str) -> tuple[list[
             "top_k": args.top_k,
             "min_score": args.min_score,
             "retrieval_mode": mode,
-            "enable_rerank": False,
+            "enable_rerank": enable_rerank,
         }
     ).encode("utf-8")
     request = urllib.request.Request(
@@ -103,7 +111,9 @@ def evidence_ids(items: list[dict[str, Any]]) -> list[str]:
     return sorted(found)
 
 
-def evaluate_mode(args: argparse.Namespace, cases: list[dict[str, Any]], mode: str) -> dict[str, Any]:
+def evaluate_mode(
+    args: argparse.Namespace, cases: list[dict[str, Any]], mode: str, enable_rerank: bool = False
+) -> dict[str, Any]:
     results: list[dict[str, Any]] = []
     latencies: list[float] = []
     recalls: list[float] = []
@@ -112,7 +122,7 @@ def evaluate_mode(args: argparse.Namespace, cases: list[dict[str, Any]], mode: s
 
     for case in cases:
         required = sorted(set(case.get("required_evidence", [])))
-        items, latency_ms, error = call_search(args, str(case["prompt"]), mode)
+        items, latency_ms, error = call_search(args, str(case["prompt"]), mode, enable_rerank)
         latencies.append(round(latency_ms, 3))
         retrieved = evidence_ids(items)
         matched = sorted(set(required) & set(retrieved))
@@ -163,6 +173,48 @@ def evaluate_mode(args: argparse.Namespace, cases: list[dict[str, Any]], mode: s
     }
 
 
+def compare_rerank_variants(mode_results: dict[str, dict[str, Any]]) -> list[dict[str, Any]]:
+    """Return paired deltas without inventing a latency acceptance threshold."""
+    comparisons: list[dict[str, Any]] = []
+    for mode in DEFAULT_MODES:
+        baseline = mode_results.get(mode, {}).get("summary")
+        reranked = mode_results.get(f"{mode}+rerank", {}).get("summary")
+        if baseline is None or reranked is None:
+            continue
+
+        baseline_recall = baseline["mean_evidence_recall_at_k"]
+        reranked_recall = reranked["mean_evidence_recall_at_k"]
+        recall_delta = (
+            round(reranked_recall - baseline_recall, 6)
+            if baseline_recall is not None and reranked_recall is not None
+            else None
+        )
+        baseline_p95 = baseline["p95_latency_ms"]
+        reranked_p95 = reranked["p95_latency_ms"]
+        p95_delta = round(reranked_p95 - baseline_p95, 3) if baseline_p95 is not None and reranked_p95 is not None else None
+        error_delta = reranked["api_errors"] - baseline["api_errors"]
+
+        if recall_delta is None:
+            recommendation = "manual_review_required"
+        elif recall_delta <= 0:
+            recommendation = "keep_rerank_off"
+        else:
+            recommendation = "review_latency_and_errors_before_enabling"
+
+        comparisons.append(
+            {
+                "mode": mode,
+                "baseline": mode,
+                "candidate": f"{mode}+rerank",
+                "recall_delta": recall_delta,
+                "p95_latency_delta_ms": p95_delta,
+                "api_error_delta": error_delta,
+                "recommendation": recommendation,
+            }
+        )
+    return comparisons
+
+
 def main() -> int:
     args = parse_args()
     if args.top_k <= 0:
@@ -171,8 +223,19 @@ def main() -> int:
     invalid = set(modes) - set(DEFAULT_MODES)
     if not modes or invalid:
         raise SystemExit(f"--modes 仅支持 {', '.join(DEFAULT_MODES)}，当前无效值: {', '.join(sorted(invalid))}")
+    rerank_variant_names = tuple(variant.strip() for variant in args.rerank_variants.split(",") if variant.strip())
+    invalid_variants = set(rerank_variant_names) - set(RERANK_VARIANTS)
+    if not rerank_variant_names or invalid_variants:
+        raise SystemExit(
+            f"--rerank-variants 仅支持 {', '.join(sorted(RERANK_VARIANTS))}，当前无效值: {', '.join(sorted(invalid_variants))}"
+        )
 
     dataset_id, cases = load_cases(args.cases)
+    mode_results = {
+        f"{mode}{'+rerank' if enable_rerank else ''}": evaluate_mode(args, cases, mode, enable_rerank)
+        for mode in modes
+        for enable_rerank in (RERANK_VARIANTS[variant] for variant in rerank_variant_names)
+    }
     report = {
         "report_type": "incidentpilot_retrieval_baseline",
         "generated_at": datetime.now(timezone.utc).isoformat(),
@@ -182,7 +245,7 @@ def main() -> int:
             "kb_id": args.kb_id,
             "top_k": args.top_k,
             "min_score": args.min_score,
-            "rerank_enabled": False,
+            "rerank_variants": list(rerank_variant_names),
             "modes": list(modes),
             "timeout_seconds": args.timeout,
             "token_source": "COGNIDA_TOKEN/--token" if args.token else "none (requires DEV_MODE bypass)",
@@ -191,8 +254,10 @@ def main() -> int:
             "证据命中通过检索片段正文中的【PI-KB-xxx-x】编号判定。",
             "无必要证据案例不计入 Recall@K，需另行评估拒答行为。",
             "本脚本只调用 POST /api/v1/knowledge/search，不写入知识库、Milvus 或评测集。",
+            "启用 on 只用于离线对比；除非 Recall@K 改善且延迟、错误率均可接受，不应修改线上核验台的默认检索设置。",
         ],
-        "modes": {mode: evaluate_mode(args, cases, mode) for mode in modes},
+        "modes": mode_results,
+        "rerank_comparisons": compare_rerank_variants(mode_results),
     }
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

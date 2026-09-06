@@ -51,6 +51,7 @@ import (
 	domain_conversation "cognida/internal/model/conversation"
 	datasourcemodel "cognida/internal/model/datasource"
 	domain_evaluation "cognida/internal/model/evaluation"
+	domain_incident "cognida/internal/model/incident"
 	domain_knowledge "cognida/internal/model/knowledge"
 	domain_llm "cognida/internal/model/llm"
 	qualitymodel "cognida/internal/model/quality"
@@ -104,6 +105,7 @@ func InitializeApp(db *gorm.DB, cfg *config.Config) (*App, error) {
 		ProvideTaskRepository,
 		ProvideTaskQueue,
 		ProvideGraphQueryRepository,
+		ProvidePaymentIncidentRepository,
 
 		// Neo4j
 		ProvideNeo4jDriver,
@@ -186,6 +188,7 @@ func InitializeApp(db *gorm.DB, cfg *config.Config) (*App, error) {
 		// Handler
 		ProvideAuthHandler,
 		ProvideKnowledgeBaseHandler,
+		ProvidePaymentIncidentHandler,
 		ProvideSessionHandler,
 		ProvideMessageHandler,
 		ProvideTenantHandler,
@@ -762,6 +765,14 @@ func ProvideAuditRepository(db *gorm.DB) domain_audit.Repository {
 	return mysql.NewAuditRepository(db)
 }
 
+func ProvidePaymentIncidentRepository(db *gorm.DB) domain_incident.Repository {
+	return mysql.NewPaymentIncidentRepository(db)
+}
+
+func ProvidePaymentIncidentHandler(repo domain_incident.Repository) *handler.PaymentIncidentHandler {
+	return handler.NewPaymentIncidentHandler(repo)
+}
+
 // ProvideAuditWriter 提供审计异步批量写入器。
 // 后台 flush goroutine 在构造时启动，App.Shutdown 负责优雅收尾。
 func ProvideAuditWriter(repo domain_audit.Repository) *auditsvc.Writer {
@@ -1027,6 +1038,7 @@ func ProvideRouter(
 	semanticHandler *handler.SemanticHandler,
 	auditHandler *handler.AuditHandler,
 	traceHandler *handler.TraceHandler,
+	paymentIncidentHandler *handler.PaymentIncidentHandler,
 	webHandler *web.Handler,
 	authMiddleware *middleware.AuthMiddleware,
 	tenantMiddleware *middleware.TenantMiddleware,
@@ -1051,6 +1063,7 @@ func ProvideRouter(
 		semanticHandler,
 		auditHandler,
 		traceHandler,
+		paymentIncidentHandler,
 		webHandler,
 		authMiddleware,
 		tenantMiddleware,

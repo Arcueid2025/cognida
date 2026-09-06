@@ -22,31 +22,32 @@ import (
 
 // Router 路由器
 type Router struct {
-	engine               *gin.Engine
-	authHandler          *handler.AuthHandler
-	knowledgeBaseHandler *handler.KnowledgeBaseHandler
-	sessionHandler       *handler.SessionHandler
-	messageHandler       *handler.MessageHandler
-	tenantHandler        *handler.TenantHandler
-	agentHandler         *handler.AgentHandler
-	registryAgentHandler *handler.RegistryAgentHandler
-	graphHandler         *handler.GraphHandler
-	modelHandler         *handler.ModelHandler
-	taskHandler          *handler.TaskHandler
-	ragOptimizerHandler  *handler.RAGOptimizerHandler
-	guardrailHandler     *handler.GuardrailHandler
-	evaluationHandler    *handler.EvaluationHandler
-	qualityHandler       *handler.QualityHandler
-	dataSourceHandler    *handler.DataSourceHandler
-	semanticHandler      *handler.SemanticHandler
-	auditHandler         *handler.AuditHandler
-	traceHandler         *handler.TraceHandler
-	webHandler           *web.Handler
-	authMiddleware       *middleware.AuthMiddleware
-	tenantMiddleware     *middleware.TenantMiddleware
-	auditMiddleware      *middleware.AuditMiddleware
-	rateLimiter          *middleware.RateLimiter
-	idempotency          *middleware.Idempotency
+	engine                 *gin.Engine
+	authHandler            *handler.AuthHandler
+	knowledgeBaseHandler   *handler.KnowledgeBaseHandler
+	sessionHandler         *handler.SessionHandler
+	messageHandler         *handler.MessageHandler
+	tenantHandler          *handler.TenantHandler
+	agentHandler           *handler.AgentHandler
+	registryAgentHandler   *handler.RegistryAgentHandler
+	graphHandler           *handler.GraphHandler
+	modelHandler           *handler.ModelHandler
+	taskHandler            *handler.TaskHandler
+	ragOptimizerHandler    *handler.RAGOptimizerHandler
+	guardrailHandler       *handler.GuardrailHandler
+	evaluationHandler      *handler.EvaluationHandler
+	qualityHandler         *handler.QualityHandler
+	dataSourceHandler      *handler.DataSourceHandler
+	semanticHandler        *handler.SemanticHandler
+	auditHandler           *handler.AuditHandler
+	traceHandler           *handler.TraceHandler
+	paymentIncidentHandler *handler.PaymentIncidentHandler
+	webHandler             *web.Handler
+	authMiddleware         *middleware.AuthMiddleware
+	tenantMiddleware       *middleware.TenantMiddleware
+	auditMiddleware        *middleware.AuditMiddleware
+	rateLimiter            *middleware.RateLimiter
+	idempotency            *middleware.Idempotency
 
 	mu  sync.Mutex   // 保护 srv 在 Run/Shutdown 间的并发访问
 	srv *http.Server // 由 Run 构造并持有，供 Shutdown 优雅关闭
@@ -73,6 +74,7 @@ func NewRouter(
 	semanticHandler *handler.SemanticHandler,
 	auditHandler *handler.AuditHandler,
 	traceHandler *handler.TraceHandler,
+	paymentIncidentHandler *handler.PaymentIncidentHandler,
 	webHandler *web.Handler,
 	// Middleware
 	authMiddleware *middleware.AuthMiddleware,
@@ -90,29 +92,30 @@ func NewRouter(
 	engine.Use(auditMiddleware.Apply())
 
 	return &Router{
-		engine:               engine,
-		authHandler:          authHandler,
-		knowledgeBaseHandler: knowledgeBaseHandler,
-		sessionHandler:       sessionHandler,
-		messageHandler:       messageHandler,
-		tenantHandler:        tenantHandler,
-		agentHandler:         agentHandler,
-		registryAgentHandler: registryAgentHandler,
-		graphHandler:         graphHandler,
-		modelHandler:         modelHandler,
-		taskHandler:          taskHandler,
-		ragOptimizerHandler:  ragOptimizerHandler,
-		guardrailHandler:     guardrailHandler,
-		evaluationHandler:    evaluationHandler,
-		qualityHandler:       qualityHandler,
-		dataSourceHandler:    dataSourceHandler,
-		semanticHandler:      semanticHandler,
-		auditHandler:         auditHandler,
-		traceHandler:         traceHandler,
-		webHandler:           webHandler,
-		authMiddleware:       authMiddleware,
-		tenantMiddleware:     tenantMiddleware,
-		auditMiddleware:      auditMiddleware,
+		engine:                 engine,
+		authHandler:            authHandler,
+		knowledgeBaseHandler:   knowledgeBaseHandler,
+		sessionHandler:         sessionHandler,
+		messageHandler:         messageHandler,
+		tenantHandler:          tenantHandler,
+		agentHandler:           agentHandler,
+		registryAgentHandler:   registryAgentHandler,
+		graphHandler:           graphHandler,
+		modelHandler:           modelHandler,
+		taskHandler:            taskHandler,
+		ragOptimizerHandler:    ragOptimizerHandler,
+		guardrailHandler:       guardrailHandler,
+		evaluationHandler:      evaluationHandler,
+		qualityHandler:         qualityHandler,
+		dataSourceHandler:      dataSourceHandler,
+		semanticHandler:        semanticHandler,
+		auditHandler:           auditHandler,
+		traceHandler:           traceHandler,
+		paymentIncidentHandler: paymentIncidentHandler,
+		webHandler:             webHandler,
+		authMiddleware:         authMiddleware,
+		tenantMiddleware:       tenantMiddleware,
+		auditMiddleware:        auditMiddleware,
 	}
 }
 
@@ -174,6 +177,7 @@ func (r *Router) Setup(rateLimiter *middleware.RateLimiter, idempotency *middlew
 		tenant.Use(r.idempotency.Apply()) // 幂等去重〔M6〕（tenant 组，去重键含 tenant_id）
 		{
 			r.setupKBRoutes(tenant)
+			r.setupPaymentIncidentRoutes(tenant)
 			r.setupGraphRoutes(tenant)
 
 			// 知识库搜索（在 tenant 组内，但不需要 kb_id 参数）
@@ -186,6 +190,16 @@ func (r *Router) Setup(rateLimiter *middleware.RateLimiter, idempotency *middlew
 
 	// 静态文件服务（生产环境）
 	r.setupWebRoutes()
+}
+
+func (r *Router) setupPaymentIncidentRoutes(api *gin.RouterGroup) {
+	if r.paymentIncidentHandler == nil {
+		return
+	}
+	incidents := api.Group("/payment-incidents")
+	incidents.POST("", r.paymentIncidentHandler.Create)
+	incidents.GET("", r.paymentIncidentHandler.List)
+	incidents.POST("/:id/status", r.paymentIncidentHandler.Transition)
 }
 
 // setupAuthRoutes 设置认证路由

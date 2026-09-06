@@ -1,0 +1,78 @@
+{
+  "dataset_id": "payment-incident-holdout-v1",
+  "purpose": "阶段 A 保留评测集；不得上传到知识库，不得据此调参后将同一集合用作最终效果宣称",
+  "cases": [
+    {
+      "id": "PI-HOLDOUT-001",
+      "category": "payment_timeout",
+      "prompt": "用户说已经被扣款，但 ORD-H1001 还是 PAYING。排查时先确认什么？",
+      "required_evidence": ["PI-KB-001-3", "PI-KB-003-3"]
+    },
+    {
+      "id": "PI-HOLDOUT-002",
+      "category": "pending_payment",
+      "prompt": "ORD-H1002 的渠道流水仍是 PENDING，页面支付中仅 9 分钟，能取消订单吗？",
+      "required_evidence": ["PI-KB-001-4", "PI-KB-005-2"]
+    },
+    {
+      "id": "PI-HOLDOUT-003",
+      "category": "callback_signature",
+      "prompt": "支付回调出现 signature_invalid，是否应该把原始请求再投递一遍？",
+      "required_evidence": ["PI-KB-002-5"]
+    },
+    {
+      "id": "PI-HOLDOUT-004",
+      "category": "callback_replay_guard",
+      "prompt": "付款成功、订单未支付、消费记录也没有；回调因为数据库瞬时超时失败。下一步是什么？",
+      "required_evidence": ["PI-KB-002-4", "PI-KB-004-1"]
+    },
+    {
+      "id": "PI-HOLDOUT-005",
+      "category": "idempotency_timeout",
+      "prompt": "回放接口没响应，怎样避免 ORD-H1005 被重复回放？",
+      "required_evidence": ["PI-KB-004-3", "PI-KB-004-4"]
+    },
+    {
+      "id": "PI-HOLDOUT-006",
+      "category": "cancelled_then_paid",
+      "prompt": "已经取消的订单后来收到 SUCCESS 通知，可以直接把订单恢复吗？",
+      "required_evidence": ["PI-KB-003-4", "PI-KB-005-1"]
+    },
+    {
+      "id": "PI-HOLDOUT-007",
+      "category": "amount_mismatch",
+      "prompt": "订单应付 58 元但成功支付记录是 59 元，需要自动改订单状态吗？",
+      "required_evidence": ["PI-KB-003-5", "PI-KB-005-1"]
+    },
+    {
+      "id": "PI-HOLDOUT-008",
+      "category": "stale_order_version",
+      "prompt": "诊断完成后订单的版本号变化了，原先准备的补偿还可以继续执行吗？",
+      "required_evidence": ["PI-KB-003-6"]
+    },
+    {
+      "id": "PI-HOLDOUT-009",
+      "category": "evidence_insufficient",
+      "prompt": "没有订单、支付或日志记录，能不能直接判断支付页面为什么异常？",
+      "required_evidence": ["PI-KB-005-3", "PI-KB-005-4"]
+    },
+    {
+      "id": "PI-HOLDOUT-010",
+      "category": "replay_verification",
+      "prompt": "回放回调返回 HTTP 200 后，还要核对哪些结果才能确认修复成功？",
+      "required_evidence": ["PI-KB-002-6", "PI-KB-004-5"]
+    },
+    {
+      "id": "PI-HOLDOUT-011",
+      "category": "audit_fields",
+      "prompt": "为一次支付回调补偿留下的审计记录至少需要包含什么？",
+      "required_evidence": ["PI-KB-001-6", "PI-KB-004-6"]
+    },
+    {
+      "id": "PI-HOLDOUT-012",
+      "category": "duplicate_callback",
+      "prompt": "日志写着 duplicate_ignored，是否就能认定回调处理失败？",
+      "required_evidence": ["PI-KB-002-1", "PI-KB-002-2"]
+    }
+  ]
+}

@@ -92,6 +92,8 @@
 
 验收建议：评测集扩充后，定义明确的 Recall@5 与 P95 延迟目标；每次检索策略变更都必须与基线对比。
 
+**已启动（2026-09-06）**：离线评测脚本现支持以完全相同的用例、检索模式和 `top_k` 分别运行 `enable_rerank=false/true`。重排仍未接入核验台；必须先保存对比结果，并确认 Recall@5 提升、P95 延迟和 API 错误数可接受。
+
 ### 阶段 B：受证据约束的处置建议
 
 目标：将“检索到什么”提升为“在证据约束下建议如何核验”。
@@ -101,6 +103,8 @@
 3. 将补单、回调回放、关闭订单等列为高风险建议，只生成操作草案。
 4. 保存用户问题、检索证据和建议版本，便于复盘。
 
+**已启动（2026-09-06）**：支付故障核验台已展示固定的“故障判断、已知事实、待核验项、建议动作、风险提示、引用证据”结构。仅当检索片段包含可追溯的 `PI-KB` 证据编号时才显示规则约束建议；无结果或无引用时固定输出“信息不足，建议人工升级”。核验台发起的检索会将用户问题、检索配置、原始证据快照和 `evidence-bound-v1` 建议规则版本写入既有审计日志，供复盘使用；该阶段仍未生成处置草稿、调用高风险操作或创建案件。
+
 ### 阶段 C：支付故障案件流
 
 目标：形成可追踪的人工处理闭环。
@@ -109,6 +113,15 @@
 2. 保存核验结果、人工结论、附件和处理时间线。
 3. 支持案件状态：待核验、处理中、待确认、已解决、已升级。
 4. 将检索证据与处置建议关联到案件，保证后续可追溯。
+
+**已启动（2026-09-06）**：已定义案件状态机与 `payment_incidents` 迁移。案件默认进入“待核验”，只允许按“待核验 → 处理中 → 待确认 → 已解决 / 已升级”及明确的升级路径流转；“已解决”和“已升级”是终态。表结构保留 `assessment_request_id`，用于关联阶段 B 的审计快照，不保存可执行的资金操作参数。
+
+验收标准：
+
+1. 创建案件必须验证租户、创建人和异常类型，默认优先级为 P2、状态为待核验。
+2. 不允许跳过处理中直接进入待确认，也不允许终态案件被静默重新打开。
+3. 所有案件查询和状态变更必须按 `tenant_id` 过滤；案件创建时可关联一次核验审计 `request_id`。
+4. 数据库迁移必须可正向应用和单步回滚；单元测试覆盖合法与非法状态流转。
 
 ### 阶段 D：受控操作、权限与审计
 
@@ -146,3 +159,30 @@
 ## 6. 下一项建议执行的任务
 
 优先进入阶段 A：扩大评测数据并对重排序进行离线对比。只有证明重排序能提升 Recall@5，且延迟仍在可接受范围内，再将其接入支付故障核验台。
+
+### 阶段 A 的首个执行批次
+
+先用当前 20 条开发用例生成可复现的重排 A/B 报告（开发集只用于调试，不作为最终效果宣称）：
+
+```powershell
+python .\docs\payment-incident\evaluation\run_retrieval_baseline.py `
+  --kb-id '<支付系统故障知识库 ID>' `
+  --modes hybrid `
+  --rerank-variants off,on `
+  --output .\docs\payment-incident\evaluation\results\rerank-ab-$(Get-Date -Format yyyyMMdd-HHmmss).json
+```
+
+报告中的 `hybrid` 与 `hybrid+rerank` 是唯一可比较的一对。下一步再补充与开发集隔离的标注用例和故障知识后，依据同一命令生成的结果设定正式阈值；在此之前，核验台继续固定使用未重排的混合检索。
+
+保留集 `evaluation/payment_incident_holdout_cases.json` 已包含 12 条与开发集隔离的改写场景。完成开发集调试后，使用同一配置在保留集复核；其结果应与开发集报告分开保存和报告：
+
+```powershell
+python .\docs\payment-incident\evaluation\run_retrieval_baseline.py `
+  --kb-id '<支付系统故障知识库 ID>' `
+  --cases .\docs\payment-incident\evaluation\payment_incident_holdout_cases.json `
+  --modes hybrid `
+  --rerank-variants off,on `
+  --output .\docs\payment-incident\evaluation\results\rerank-holdout-$(Get-Date -Format yyyyMMdd-HHmmss).json
+```
+
+结果文件会增加 `rerank_comparisons`，其中给出 Recall、P95 延迟和 API 错误数的差值。没有 Recall 增益时建议保持关闭；有增益也必须人工审查延迟与错误率后才能启用。

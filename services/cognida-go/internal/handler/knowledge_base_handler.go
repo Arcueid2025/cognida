@@ -18,6 +18,7 @@ import (
 	"github.com/gin-gonic/gin"
 
 	"cognida/internal/config"
+	"cognida/internal/handler/middleware"
 	domain_knowledge "cognida/internal/model/knowledge"
 	app_kb "cognida/internal/service/knowledge"
 )
@@ -931,8 +932,9 @@ func (h *KnowledgeBaseHandler) SearchKnowledge(c *gin.Context) {
 		Query            string   `json:"query" binding:"required"`
 		TopK             int      `json:"top_k"`
 		MinScore         float64  `json:"min_score"`
-		RetrievalMode    string   `json:"retrieval_mode"` // vector / bm25 / hybrid（缺省 hybrid）
-		EnableRerank     bool     `json:"enable_rerank"`  // 可插拔重排开关，默认关
+		RetrievalMode    string   `json:"retrieval_mode"`  // vector / bm25 / hybrid（缺省 hybrid）
+		EnableRerank     bool     `json:"enable_rerank"`   // 可插拔重排开关，默认关
+		SaveAssessment   bool     `json:"save_assessment"` // 核验台显式请求时保存审计快照
 	}
 	if !BindJSON(c, &req) {
 		return
@@ -983,6 +985,19 @@ func (h *KnowledgeBaseHandler) SearchKnowledge(c *gin.Context) {
 			"score":           chunk.Score,
 			"highlight":       "", // 高亮功能需要在检索结果中标记匹配的关键词位置
 		}
+	}
+	// 核验台的建议由前端纯函数按 evidence-bound-v1 规则生成。仅在显式请求时，
+	// 将问题、检索配置和原始证据快照写入既有审计链，供后续案件流复盘使用。
+	if req.SaveAssessment {
+		middleware.SetAuditSnapshot(c, map[string]interface{}{
+			"type":                   "payment_incident_assessment",
+			"recommendation_version": "evidence-bound-v1",
+			"query":                  req.Query,
+			"knowledge_base_ids":     kbIDs,
+			"retrieval_mode":         req.RetrievalMode,
+			"rerank_enabled":         req.EnableRerank,
+			"evidence":               items,
+		})
 	}
 
 	OK(c, map[string]interface{}{
