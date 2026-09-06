@@ -355,12 +355,14 @@ export interface SearchRequest {
   kb_ids: string[]
   top_k?: number
   min_score?: number
+  retrieval_mode?: 'vector' | 'bm25' | 'hybrid'
+  enable_rerank?: boolean
 }
 
 export interface SearchResult {
   chunk_id: string
   knowledge_id: string
-  // 后端当前为占位值：knowledge_title 恒为空、score 恒为 1.0，展示层需谨慎处理
+  // 后端统一检索能力返回的来源标题与相关度分数。
   knowledge_title: string
   content: string
   score: number
@@ -368,9 +370,10 @@ export interface SearchResult {
 }
 
 export interface SearchResponse {
-  // 后端返回 { total, items }
+  // 后端返回 { total, items, has_answer }
   total: number
   items: SearchResult[]
+  has_answer?: boolean
 }
 
 // ============ FAQ相关 ============

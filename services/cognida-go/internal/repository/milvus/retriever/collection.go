@@ -28,6 +28,11 @@ type CreateKnowledgeBaseOptions struct {
 	BM25B         float64           // BM25 b 参数（文档长度归一化，范围 [0, 1]，默认 0.75）
 }
 
+// chineseAnalyzerParams 使用 Milvus 内置的中文分析器（jieba + cnalphanumonly）。
+// 它要求 Milvus >= 2.5.11；对中文查询按词切分，避免 standard tokenizer 将整句
+// 查询当成无法与文档匹配的单一词项。产品升级到该最低版本的约束位于 docker-compose。
+var chineseAnalyzerParams = map[string]any{"type": "chinese"}
+
 // IndexType 索引类型
 type IndexType string
 
@@ -91,13 +96,13 @@ func (r *VectorRetriever) buildSchema(kbID int64, opts *CreateKnowledgeBaseOptio
 
 	// 3. BM25 全文搜索字段（如果启用）
 	if opts.EnableBM25 {
-		// text 字段：存储原始文本，开启分词器（analyzer）供 BM25 Function 消费。
-		// SDK v2.6+ 支持直接在 VarChar 字段上启用 analyzer 并配置分词参数。
+		// text 字段：存储原始文本，开启中文 analyzer 供 BM25 Function 消费。
+		// 支付知识库以中文为主；standard tokenizer 会让多数整句中文查询没有词项命中。
 		schema = schema.WithField(
 			entity.NewField().WithName("text").WithDataType(entity.FieldTypeVarChar).
 				WithMaxLength(65535).
 				WithEnableAnalyzer(true).
-				WithAnalyzerParams(map[string]any{"tokenizer": "standard"}),
+				WithAnalyzerParams(chineseAnalyzerParams),
 		)
 
 		// sparse 字段：由 BM25 Function 从 text 自动生成的稀疏向量（Function 输出字段，

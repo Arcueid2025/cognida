@@ -967,9 +967,17 @@ func (h *KnowledgeBaseHandler) SearchKnowledge(c *gin.Context) {
 	// 转换为响应格式：分数/出处来自统一检索能力（替代旧裸子串匹配硬编码的固定分数 1.0 与空标题）。
 	items := make([]map[string]interface{}, len(result.Chunks))
 	for i, chunk := range result.Chunks {
+		// 向量库不持久化文档标题；以 MySQL 的 knowledge 记录补全来源名。
+		// 失败时保留检索层的回退标签，不能因为展示增强使搜索整体失败。
+		source := chunk.Source
+		if chunk.KnowledgeID != "" && chunk.KnowledgeBaseID != "" {
+			if knowledge, lookupErr := h.knowledgeBaseService.GetKnowledgeDetail(c.Request.Context(), chunk.KnowledgeBaseID, tenantID, chunk.KnowledgeID); lookupErr == nil && strings.TrimSpace(knowledge.Title) != "" {
+				source = knowledge.Title
+			}
+		}
 		items[i] = map[string]interface{}{
 			"knowledge_id":    chunk.KnowledgeID,
-			"knowledge_title": chunk.Source,
+			"knowledge_title": source,
 			"chunk_id":        chunk.ChunkID,
 			"content":         chunk.Content,
 			"score":           chunk.Score,

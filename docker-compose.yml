@@ -124,7 +124,8 @@ services:
     networks: [cognida-net]
 
   milvus:
-    image: milvusdb/milvus:v2.5.4
+    # v2.5.11 起支持 chinese analyzer；支付知识库是中文语料，BM25 需以 jieba 分词。
+    image: milvusdb/milvus:v2.5.11
     container_name: cognida-milvus
     command: ["milvus", "run", "standalone"]
     environment:

@@ -107,6 +107,7 @@ const ICONS = {
 const menuItems = computed(() => [
   { path: '/home', title: t('menu.home'), icon: ICONS.home },
   { path: '/kb-assistant', title: t('menu.kb'), icon: ICONS.kb },
+  { path: '/payment-incidents', title: '支付故障核验', icon: ICONS.audit },
   { path: '/data-agent', title: t('menu.dataAgent'), icon: ICONS.ai },
   { path: '/knowledge', title: t('menu.knowledge'), icon: ICONS.knowledge },
   { path: '/graphs', title: t('menu.graph'), icon: ICONS.graph },

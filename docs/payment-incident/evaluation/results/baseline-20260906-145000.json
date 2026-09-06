@@ -1,0 +1,3130 @@
+{
+  "report_type": "incidentpilot_retrieval_baseline",
+  "generated_at": "2026-09-06T03:51:16.663200+00:00",
+  "dataset_id": "payment-incident-dev-v1",
+  "configuration": {
+    "base_url": "http://localhost:8080",
+    "kb_id": "2026090510423959ba14d92e0f1e78",
+    "top_k": 5,
+    "min_score": 0.0,
+    "rerank_enabled": false,
+    "modes": [
+      "vector",
+      "bm25",
+      "hybrid"
+    ],
+    "timeout_seconds": 60,
+    "token_source": "COGNIDA_TOKEN/--token"
+  },
+  "notes": [
+    "证据命中通过检索片段正文中的【PI-KB-xxx-x】编号判定。",
+    "无必要证据案例不计入 Recall@K，需另行评估拒答行为。",
+    "本脚本只调用 POST /api/v1/knowledge/search，不写入知识库、Milvus 或评测集。"
+  ],
+  "modes": {
+    "vector": {
+      "summary": {
+        "cases": 20,
+        "cases_with_required_evidence": 20,
+        "evidence_free_cases": 0,
+        "api_errors": 0,
+        "mean_evidence_recall_at_k": 0.5625,
+        "mean_latency_ms": 163.78,
+        "p95_latency_ms": 207.635,
+        "failure_case_ids": [
+          "PI-DEV-001",
+          "PI-DEV-003",
+          "PI-DEV-004",
+          "PI-DEV-006",
+          "PI-DEV-007",
+          "PI-DEV-008",
+          "PI-DEV-011",
+          "PI-DEV-014",
+          "PI-DEV-015",
+          "PI-DEV-017",
+          "PI-DEV-019",
+          "PI-DEV-020"
+        ]
+      },
+      "cases": [
+        {
+          "case_id": "PI-DEV-001",
+          "category": "payment_timeout",
+          "latency_ms": 394.09,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-001-3",
+            "PI-KB-003-3"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-001-1",
+            "PI-KB-001-2",
+            "PI-KB-001-3",
+            "PI-KB-001-4",
+            "PI-KB-001-5",
+            "PI-KB-001-6",
+            "PI-KB-004-1",
+            "PI-KB-004-2",
+            "PI-KB-004-3",
+            "PI-KB-005-1",
+            "PI-KB-005-2",
+            "PI-KB-005-3",
+            "PI-KB-005-4"
+          ],
+          "matched_evidence": [
+            "PI-KB-001-3"
+          ],
+          "evidence_recall_at_k": 0.5,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905104519e998008b1da45c99",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 0.6079264283180237
+            },
+            {
+              "rank": 2,
+              "chunk_id": "20260905104519c6c582ef5d7213cd",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 0.6075961589813232
+            },
+            {
+              "rank": 3,
+              "chunk_id": "20260905105541a35e996518e1d413",
+              "knowledge_id": "20260905105541e1ac16be6db71939",
+              "knowledge_title": "20260905105541e1ac16be6db71939",
+              "score": 0.5828707218170166
+            },
+            {
+              "rank": 4,
+              "chunk_id": "20260905104519f3490f69c2f53aac",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 0.5365116000175476
+            },
+            {
+              "rank": 5,
+              "chunk_id": "202609051055412aabff8fec2e5683",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "2026090510554133d77f04b8f34f93",
+              "score": 0.5179706811904907
+            }
+          ]
+        },
+        {
+          "case_id": "PI-DEV-002",
+          "category": "payment_pending",
+          "latency_ms": 112.131,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-001-4",
+            "PI-KB-005-2"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-001-1",
+            "PI-KB-001-2",
+            "PI-KB-001-3",
+            "PI-KB-001-4",
+            "PI-KB-001-5",
+            "PI-KB-001-6",
+            "PI-KB-004-4",
+            "PI-KB-004-5",
+            "PI-KB-004-6",
+            "PI-KB-005-1",
+            "PI-KB-005-2",
+            "PI-KB-005-3",
+            "PI-KB-005-4"
+          ],
+          "matched_evidence": [
+            "PI-KB-001-4",
+            "PI-KB-005-2"
+          ],
+          "evidence_recall_at_k": 1.0,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905104519e998008b1da45c99",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 0.5800844430923462
+            },
+            {
+              "rank": 2,
+              "chunk_id": "20260905104519c6c582ef5d7213cd",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 0.5791277289390564
+            },
+            {
+              "rank": 3,
+              "chunk_id": "20260905105541a35e996518e1d413",
+              "knowledge_id": "20260905105541e1ac16be6db71939",
+              "knowledge_title": "20260905105541e1ac16be6db71939",
+              "score": 0.5569791793823242
+            },
+            {
+              "rank": 4,
+              "chunk_id": "20260905104519f3490f69c2f53aac",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 0.5399441719055176
+            },
+            {
+              "rank": 5,
+              "chunk_id": "20260905105541c727e95f3f5ce7e4",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "2026090510554133d77f04b8f34f93",
+              "score": 0.5343534350395203
+            }
+          ]
+        },
+        {
+          "case_id": "PI-DEV-003",
+          "category": "callback_transient_error",
+          "latency_ms": 136.45,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-002-4",
+            "PI-KB-004-1"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-001-1",
+            "PI-KB-001-2",
+            "PI-KB-001-3",
+            "PI-KB-001-4",
+            "PI-KB-001-5",
+            "PI-KB-001-6",
+            "PI-KB-004-4",
+            "PI-KB-004-5",
+            "PI-KB-004-6",
+            "PI-KB-005-1",
+            "PI-KB-005-2",
+            "PI-KB-005-3",
+            "PI-KB-005-4"
+          ],
+          "matched_evidence": [],
+          "evidence_recall_at_k": 0.0,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905105541a35e996518e1d413",
+              "knowledge_id": "20260905105541e1ac16be6db71939",
+              "knowledge_title": "20260905105541e1ac16be6db71939",
+              "score": 0.5784741044044495
+            },
+            {
+              "rank": 2,
+              "chunk_id": "20260905104519c6c582ef5d7213cd",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 0.5746437311172485
+            },
+            {
+              "rank": 3,
+              "chunk_id": "20260905104519e998008b1da45c99",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 0.5719422101974487
+            },
+            {
+              "rank": 4,
+              "chunk_id": "20260905104519f3490f69c2f53aac",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 0.5658111572265625
+            },
+            {
+              "rank": 5,
+              "chunk_id": "20260905105541c727e95f3f5ce7e4",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "2026090510554133d77f04b8f34f93",
+              "score": 0.5630360245704651
+            }
+          ]
+        },
+        {
+          "case_id": "PI-DEV-004",
+          "category": "callback_signature",
+          "latency_ms": 137.682,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-002-5"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-001-6",
+            "PI-KB-004-4",
+            "PI-KB-004-5",
+            "PI-KB-004-6",
+            "PI-KB-005-1",
+            "PI-KB-005-2",
+            "PI-KB-005-3",
+            "PI-KB-005-4"
+          ],
+          "matched_evidence": [],
+          "evidence_recall_at_k": 0.0,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905105541c727e95f3f5ce7e4",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "2026090510554133d77f04b8f34f93",
+              "score": 0.5659152269363403
+            },
+            {
+              "rank": 2,
+              "chunk_id": "202609051055410b22050ce9fa5ee4",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "20260905105541c03e0bc88fd1be95",
+              "score": 0.5659152269363403
+            },
+            {
+              "rank": 3,
+              "chunk_id": "20260905105541ea486252a61f64a2",
+              "knowledge_id": "20260905105541be6a574be8a24c47",
+              "knowledge_title": "20260905105541be6a574be8a24c47",
+              "score": 0.5659152269363403
+            },
+            {
+              "rank": 4,
+              "chunk_id": "20260905104519f3490f69c2f53aac",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 0.5296991467475891
+            },
+            {
+              "rank": 5,
+              "chunk_id": "20260905105541a35e996518e1d413",
+              "knowledge_id": "20260905105541e1ac16be6db71939",
+              "knowledge_title": "20260905105541e1ac16be6db71939",
+              "score": 0.5215875506401062
+            }
+          ]
+        },
+        {
+          "case_id": "PI-DEV-005",
+          "category": "idempotency",
+          "latency_ms": 176.57,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-004-3",
+            "PI-KB-004-4"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-004-1",
+            "PI-KB-004-2",
+            "PI-KB-004-3",
+            "PI-KB-004-4",
+            "PI-KB-004-5",
+            "PI-KB-004-6"
+          ],
+          "matched_evidence": [
+            "PI-KB-004-3",
+            "PI-KB-004-4"
+          ],
+          "evidence_recall_at_k": 1.0,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905105541c727e95f3f5ce7e4",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "2026090510554133d77f04b8f34f93",
+              "score": 0.5658847689628601
+            },
+            {
+              "rank": 2,
+              "chunk_id": "202609051055410b22050ce9fa5ee4",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "20260905105541c03e0bc88fd1be95",
+              "score": 0.5658847689628601
+            },
+            {
+              "rank": 3,
+              "chunk_id": "20260905105541ea486252a61f64a2",
+              "knowledge_id": "20260905105541be6a574be8a24c47",
+              "knowledge_title": "20260905105541be6a574be8a24c47",
+              "score": 0.5658847689628601
+            },
+            {
+              "rank": 4,
+              "chunk_id": "202609051055412aabff8fec2e5683",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "2026090510554133d77f04b8f34f93",
+              "score": 0.5584306120872498
+            },
+            {
+              "rank": 5,
+              "chunk_id": "20260905105541b4d5f40e4cbf817b",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "20260905105541c03e0bc88fd1be95",
+              "score": 0.5584306120872498
+            }
+          ]
+        },
+        {
+          "case_id": "PI-DEV-006",
+          "category": "amount_mismatch",
+          "latency_ms": 137.62,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-003-5",
+            "PI-KB-005-1"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-001-1",
+            "PI-KB-001-2",
+            "PI-KB-001-3",
+            "PI-KB-001-4",
+            "PI-KB-001-5",
+            "PI-KB-001-6",
+            "PI-KB-004-1",
+            "PI-KB-004-2",
+            "PI-KB-004-3",
+            "PI-KB-005-1",
+            "PI-KB-005-2",
+            "PI-KB-005-3",
+            "PI-KB-005-4"
+          ],
+          "matched_evidence": [
+            "PI-KB-005-1"
+          ],
+          "evidence_recall_at_k": 0.5,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905105541a35e996518e1d413",
+              "knowledge_id": "20260905105541e1ac16be6db71939",
+              "knowledge_title": "20260905105541e1ac16be6db71939",
+              "score": 0.5713798999786377
+            },
+            {
+              "rank": 2,
+              "chunk_id": "20260905104519c6c582ef5d7213cd",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 0.5553717613220215
+            },
+            {
+              "rank": 3,
+              "chunk_id": "20260905104519e998008b1da45c99",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 0.5522244572639465
+            },
+            {
+              "rank": 4,
+              "chunk_id": "20260905104519f3490f69c2f53aac",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 0.542058527469635
+            },
+            {
+              "rank": 5,
+              "chunk_id": "202609051055412aabff8fec2e5683",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "2026090510554133d77f04b8f34f93",
+              "score": 0.5143670439720154
+            }
+          ]
+        },
+        {
+          "case_id": "PI-DEV-007",
+          "category": "cancelled_then_paid",
+          "latency_ms": 111.205,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-003-4",
+            "PI-KB-005-1"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-001-4",
+            "PI-KB-001-5",
+            "PI-KB-001-6",
+            "PI-KB-004-1",
+            "PI-KB-004-2",
+            "PI-KB-004-3",
+            "PI-KB-005-1",
+            "PI-KB-005-2",
+            "PI-KB-005-3",
+            "PI-KB-005-4"
+          ],
+          "matched_evidence": [
+            "PI-KB-005-1"
+          ],
+          "evidence_recall_at_k": 0.5,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905104519e998008b1da45c99",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 0.5600808262825012
+            },
+            {
+              "rank": 2,
+              "chunk_id": "20260905105541a35e996518e1d413",
+              "knowledge_id": "20260905105541e1ac16be6db71939",
+              "knowledge_title": "20260905105541e1ac16be6db71939",
+              "score": 0.5430163741111755
+            },
+            {
+              "rank": 3,
+              "chunk_id": "20260905104519f3490f69c2f53aac",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 0.5380871295928955
+            },
+            {
+              "rank": 4,
+              "chunk_id": "202609051055412aabff8fec2e5683",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "2026090510554133d77f04b8f34f93",
+              "score": 0.5334998965263367
+            },
+            {
+              "rank": 5,
+              "chunk_id": "20260905105541b4d5f40e4cbf817b",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "20260905105541c03e0bc88fd1be95",
+              "score": 0.5334998965263367
+            }
+          ]
+        },
+        {
+          "case_id": "PI-DEV-008",
+          "category": "duplicate_callback",
+          "latency_ms": 166.014,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-002-2"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-004-1",
+            "PI-KB-004-2",
+            "PI-KB-004-3",
+            "PI-KB-004-4",
+            "PI-KB-004-5",
+            "PI-KB-004-6"
+          ],
+          "matched_evidence": [],
+          "evidence_recall_at_k": 0.0,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905105541c727e95f3f5ce7e4",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "2026090510554133d77f04b8f34f93",
+              "score": 0.5427062511444092
+            },
+            {
+              "rank": 2,
+              "chunk_id": "202609051055410b22050ce9fa5ee4",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "20260905105541c03e0bc88fd1be95",
+              "score": 0.5427062511444092
+            },
+            {
+              "rank": 3,
+              "chunk_id": "20260905105541ea486252a61f64a2",
+              "knowledge_id": "20260905105541be6a574be8a24c47",
+              "knowledge_title": "20260905105541be6a574be8a24c47",
+              "score": 0.5427062511444092
+            },
+            {
+              "rank": 4,
+              "chunk_id": "202609051055412aabff8fec2e5683",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "2026090510554133d77f04b8f34f93",
+              "score": 0.5113441348075867
+            },
+            {
+              "rank": 5,
+              "chunk_id": "20260905105541b4d5f40e4cbf817b",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "20260905105541c03e0bc88fd1be95",
+              "score": 0.5113441348075867
+            }
+          ]
+        },
+        {
+          "case_id": "PI-DEV-009",
+          "category": "missing_order_id",
+          "latency_ms": 187.313,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-001-2"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-001-1",
+            "PI-KB-001-2",
+            "PI-KB-001-3",
+            "PI-KB-001-4",
+            "PI-KB-001-5",
+            "PI-KB-004-4",
+            "PI-KB-004-5",
+            "PI-KB-004-6",
+            "PI-KB-005-1",
+            "PI-KB-005-2",
+            "PI-KB-005-3",
+            "PI-KB-005-4"
+          ],
+          "matched_evidence": [
+            "PI-KB-001-2"
+          ],
+          "evidence_recall_at_k": 1.0,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905104519c6c582ef5d7213cd",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 0.5663160085678101
+            },
+            {
+              "rank": 2,
+              "chunk_id": "20260905104519e998008b1da45c99",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 0.5580008625984192
+            },
+            {
+              "rank": 3,
+              "chunk_id": "20260905105541a35e996518e1d413",
+              "knowledge_id": "20260905105541e1ac16be6db71939",
+              "knowledge_title": "20260905105541e1ac16be6db71939",
+              "score": 0.5410000681877136
+            },
+            {
+              "rank": 4,
+              "chunk_id": "20260905105541c727e95f3f5ce7e4",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "2026090510554133d77f04b8f34f93",
+              "score": 0.5285921692848206
+            },
+            {
+              "rank": 5,
+              "chunk_id": "202609051055410b22050ce9fa5ee4",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "20260905105541c03e0bc88fd1be95",
+              "score": 0.5285921692848206
+            }
+          ]
+        },
+        {
+          "case_id": "PI-DEV-010",
+          "category": "no_callback_log",
+          "latency_ms": 125.14,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-005-4"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-001-4",
+            "PI-KB-001-5",
+            "PI-KB-004-4",
+            "PI-KB-004-5",
+            "PI-KB-004-6",
+            "PI-KB-005-1",
+            "PI-KB-005-2",
+            "PI-KB-005-3",
+            "PI-KB-005-4"
+          ],
+          "matched_evidence": [
+            "PI-KB-005-4"
+          ],
+          "evidence_recall_at_k": 1.0,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905104519e998008b1da45c99",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 0.6060853600502014
+            },
+            {
+              "rank": 2,
+              "chunk_id": "20260905105541c727e95f3f5ce7e4",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "2026090510554133d77f04b8f34f93",
+              "score": 0.5691067576408386
+            },
+            {
+              "rank": 3,
+              "chunk_id": "202609051055410b22050ce9fa5ee4",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "20260905105541c03e0bc88fd1be95",
+              "score": 0.5691067576408386
+            },
+            {
+              "rank": 4,
+              "chunk_id": "20260905105541ea486252a61f64a2",
+              "knowledge_id": "20260905105541be6a574be8a24c47",
+              "knowledge_title": "20260905105541be6a574be8a24c47",
+              "score": 0.5691067576408386
+            },
+            {
+              "rank": 5,
+              "chunk_id": "20260905105541a35e996518e1d413",
+              "knowledge_id": "20260905105541e1ac16be6db71939",
+              "knowledge_title": "20260905105541e1ac16be6db71939",
+              "score": 0.5668386816978455
+            }
+          ]
+        },
+        {
+          "case_id": "PI-DEV-011",
+          "category": "payment_failed",
+          "latency_ms": 110.816,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-001-4",
+            "PI-KB-003-1"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-001-1",
+            "PI-KB-001-2",
+            "PI-KB-001-3",
+            "PI-KB-001-4",
+            "PI-KB-001-5",
+            "PI-KB-004-4",
+            "PI-KB-004-5",
+            "PI-KB-004-6",
+            "PI-KB-005-1",
+            "PI-KB-005-2",
+            "PI-KB-005-3",
+            "PI-KB-005-4"
+          ],
+          "matched_evidence": [
+            "PI-KB-001-4"
+          ],
+          "evidence_recall_at_k": 0.5,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905104519e998008b1da45c99",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 0.6280477643013
+            },
+            {
+              "rank": 2,
+              "chunk_id": "20260905105541a35e996518e1d413",
+              "knowledge_id": "20260905105541e1ac16be6db71939",
+              "knowledge_title": "20260905105541e1ac16be6db71939",
+              "score": 0.561235785484314
+            },
+            {
+              "rank": 3,
+              "chunk_id": "20260905104519c6c582ef5d7213cd",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 0.546745240688324
+            },
+            {
+              "rank": 4,
+              "chunk_id": "20260905105541c727e95f3f5ce7e4",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "2026090510554133d77f04b8f34f93",
+              "score": 0.5382291674613953
+            },
+            {
+              "rank": 5,
+              "chunk_id": "202609051055410b22050ce9fa5ee4",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "20260905105541c03e0bc88fd1be95",
+              "score": 0.5382291674613953
+            }
+          ]
+        },
+        {
+          "case_id": "PI-DEV-012",
+          "category": "multi_success_payment",
+          "latency_ms": 128.519,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-001-5",
+            "PI-KB-005-1"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-001-1",
+            "PI-KB-001-2",
+            "PI-KB-001-3",
+            "PI-KB-001-4",
+            "PI-KB-001-5",
+            "PI-KB-001-6",
+            "PI-KB-004-4",
+            "PI-KB-004-5",
+            "PI-KB-004-6",
+            "PI-KB-005-1",
+            "PI-KB-005-2",
+            "PI-KB-005-3",
+            "PI-KB-005-4"
+          ],
+          "matched_evidence": [
+            "PI-KB-001-5",
+            "PI-KB-005-1"
+          ],
+          "evidence_recall_at_k": 1.0,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905104519e998008b1da45c99",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 0.5750615000724792
+            },
+            {
+              "rank": 2,
+              "chunk_id": "20260905105541a35e996518e1d413",
+              "knowledge_id": "20260905105541e1ac16be6db71939",
+              "knowledge_title": "20260905105541e1ac16be6db71939",
+              "score": 0.5420755743980408
+            },
+            {
+              "rank": 3,
+              "chunk_id": "20260905104519c6c582ef5d7213cd",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 0.5373387336730957
+            },
+            {
+              "rank": 4,
+              "chunk_id": "20260905104519f3490f69c2f53aac",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 0.5101577639579773
+            },
+            {
+              "rank": 5,
+              "chunk_id": "20260905105541c727e95f3f5ce7e4",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "2026090510554133d77f04b8f34f93",
+              "score": 0.5084919333457947
+            }
+          ]
+        },
+        {
+          "case_id": "PI-DEV-013",
+          "category": "approval_binding",
+          "latency_ms": 172.219,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-004-2"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-004-1",
+            "PI-KB-004-2",
+            "PI-KB-004-3",
+            "PI-KB-004-4",
+            "PI-KB-004-5",
+            "PI-KB-004-6"
+          ],
+          "matched_evidence": [
+            "PI-KB-004-2"
+          ],
+          "evidence_recall_at_k": 1.0,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "202609051055412aabff8fec2e5683",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "2026090510554133d77f04b8f34f93",
+              "score": 0.5738444924354553
+            },
+            {
+              "rank": 2,
+              "chunk_id": "20260905105541b4d5f40e4cbf817b",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "20260905105541c03e0bc88fd1be95",
+              "score": 0.5738444924354553
+            },
+            {
+              "rank": 3,
+              "chunk_id": "2026090510554160fd9db52287e307",
+              "knowledge_id": "20260905105541be6a574be8a24c47",
+              "knowledge_title": "20260905105541be6a574be8a24c47",
+              "score": 0.5738444924354553
+            },
+            {
+              "rank": 4,
+              "chunk_id": "20260905105541c727e95f3f5ce7e4",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "2026090510554133d77f04b8f34f93",
+              "score": 0.5452558398246765
+            },
+            {
+              "rank": 5,
+              "chunk_id": "202609051055410b22050ce9fa5ee4",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "20260905105541c03e0bc88fd1be95",
+              "score": 0.5452558398246765
+            }
+          ]
+        },
+        {
+          "case_id": "PI-DEV-014",
+          "category": "replay_verification",
+          "latency_ms": 207.635,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-002-6",
+            "PI-KB-004-5"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-004-1",
+            "PI-KB-004-2",
+            "PI-KB-004-3",
+            "PI-KB-004-4",
+            "PI-KB-004-5",
+            "PI-KB-004-6"
+          ],
+          "matched_evidence": [
+            "PI-KB-004-5"
+          ],
+          "evidence_recall_at_k": 0.5,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905105541c727e95f3f5ce7e4",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "2026090510554133d77f04b8f34f93",
+              "score": 0.5407856702804565
+            },
+            {
+              "rank": 2,
+              "chunk_id": "202609051055410b22050ce9fa5ee4",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "20260905105541c03e0bc88fd1be95",
+              "score": 0.5407856702804565
+            },
+            {
+              "rank": 3,
+              "chunk_id": "20260905105541ea486252a61f64a2",
+              "knowledge_id": "20260905105541be6a574be8a24c47",
+              "knowledge_title": "20260905105541be6a574be8a24c47",
+              "score": 0.5407856702804565
+            },
+            {
+              "rank": 4,
+              "chunk_id": "202609051055412aabff8fec2e5683",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "2026090510554133d77f04b8f34f93",
+              "score": 0.5268322825431824
+            },
+            {
+              "rank": 5,
+              "chunk_id": "20260905105541b4d5f40e4cbf817b",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "20260905105541c03e0bc88fd1be95",
+              "score": 0.5268322825431824
+            }
+          ]
+        },
+        {
+          "case_id": "PI-DEV-015",
+          "category": "stale_order_version",
+          "latency_ms": 173.708,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-003-6"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-001-4",
+            "PI-KB-001-5",
+            "PI-KB-001-6",
+            "PI-KB-004-4",
+            "PI-KB-004-5",
+            "PI-KB-004-6",
+            "PI-KB-005-5"
+          ],
+          "matched_evidence": [],
+          "evidence_recall_at_k": 0.0,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905104519f3490f69c2f53aac",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 0.5528076887130737
+            },
+            {
+              "rank": 2,
+              "chunk_id": "20260905104519e998008b1da45c99",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 0.5466887950897217
+            },
+            {
+              "rank": 3,
+              "chunk_id": "20260905105541aa9127f3a40db3e5",
+              "knowledge_id": "20260905105541e1ac16be6db71939",
+              "knowledge_title": "20260905105541e1ac16be6db71939",
+              "score": 0.5330594778060913
+            },
+            {
+              "rank": 4,
+              "chunk_id": "20260905105541c727e95f3f5ce7e4",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "2026090510554133d77f04b8f34f93",
+              "score": 0.5315567851066589
+            },
+            {
+              "rank": 5,
+              "chunk_id": "202609051055410b22050ce9fa5ee4",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "20260905105541c03e0bc88fd1be95",
+              "score": 0.5315567851066589
+            }
+          ]
+        },
+        {
+          "case_id": "PI-DEV-016",
+          "category": "long_pending",
+          "latency_ms": 195.228,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-001-5",
+            "PI-KB-005-1"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-001-1",
+            "PI-KB-001-2",
+            "PI-KB-001-3",
+            "PI-KB-001-4",
+            "PI-KB-001-5",
+            "PI-KB-001-6",
+            "PI-KB-004-4",
+            "PI-KB-004-5",
+            "PI-KB-004-6",
+            "PI-KB-005-1",
+            "PI-KB-005-2",
+            "PI-KB-005-3",
+            "PI-KB-005-4"
+          ],
+          "matched_evidence": [
+            "PI-KB-001-5",
+            "PI-KB-005-1"
+          ],
+          "evidence_recall_at_k": 1.0,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905104519e998008b1da45c99",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 0.5777554512023926
+            },
+            {
+              "rank": 2,
+              "chunk_id": "20260905104519c6c582ef5d7213cd",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 0.5421252250671387
+            },
+            {
+              "rank": 3,
+              "chunk_id": "20260905105541a35e996518e1d413",
+              "knowledge_id": "20260905105541e1ac16be6db71939",
+              "knowledge_title": "20260905105541e1ac16be6db71939",
+              "score": 0.5398799777030945
+            },
+            {
+              "rank": 4,
+              "chunk_id": "20260905104519f3490f69c2f53aac",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 0.526908814907074
+            },
+            {
+              "rank": 5,
+              "chunk_id": "20260905105541c727e95f3f5ce7e4",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "2026090510554133d77f04b8f34f93",
+              "score": 0.5211167931556702
+            }
+          ]
+        },
+        {
+          "case_id": "PI-DEV-017",
+          "category": "event_publish_failure",
+          "latency_ms": 196.762,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-002-1",
+            "PI-KB-002-6"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-004-1",
+            "PI-KB-004-2",
+            "PI-KB-004-3",
+            "PI-KB-004-4",
+            "PI-KB-004-5",
+            "PI-KB-004-6"
+          ],
+          "matched_evidence": [],
+          "evidence_recall_at_k": 0.0,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "202609051055412aabff8fec2e5683",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "2026090510554133d77f04b8f34f93",
+              "score": 0.5755507946014404
+            },
+            {
+              "rank": 2,
+              "chunk_id": "20260905105541b4d5f40e4cbf817b",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "20260905105541c03e0bc88fd1be95",
+              "score": 0.5755507946014404
+            },
+            {
+              "rank": 3,
+              "chunk_id": "2026090510554160fd9db52287e307",
+              "knowledge_id": "20260905105541be6a574be8a24c47",
+              "knowledge_title": "20260905105541be6a574be8a24c47",
+              "score": 0.5755507946014404
+            },
+            {
+              "rank": 4,
+              "chunk_id": "20260905105541c727e95f3f5ce7e4",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "2026090510554133d77f04b8f34f93",
+              "score": 0.5754191279411316
+            },
+            {
+              "rank": 5,
+              "chunk_id": "202609051055410b22050ce9fa5ee4",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "20260905105541c03e0bc88fd1be95",
+              "score": 0.5754191279411316
+            }
+          ]
+        },
+        {
+          "case_id": "PI-DEV-018",
+          "category": "evidence_insufficient",
+          "latency_ms": 122.537,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-005-3",
+            "PI-KB-005-4"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-001-1",
+            "PI-KB-001-2",
+            "PI-KB-001-3",
+            "PI-KB-001-4",
+            "PI-KB-001-5",
+            "PI-KB-004-4",
+            "PI-KB-004-5",
+            "PI-KB-004-6",
+            "PI-KB-005-1",
+            "PI-KB-005-2",
+            "PI-KB-005-3",
+            "PI-KB-005-4"
+          ],
+          "matched_evidence": [
+            "PI-KB-005-3",
+            "PI-KB-005-4"
+          ],
+          "evidence_recall_at_k": 1.0,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905104519e998008b1da45c99",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 0.5752802491188049
+            },
+            {
+              "rank": 2,
+              "chunk_id": "20260905104519c6c582ef5d7213cd",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 0.5659135580062866
+            },
+            {
+              "rank": 3,
+              "chunk_id": "20260905105541a35e996518e1d413",
+              "knowledge_id": "20260905105541e1ac16be6db71939",
+              "knowledge_title": "20260905105541e1ac16be6db71939",
+              "score": 0.5628984570503235
+            },
+            {
+              "rank": 4,
+              "chunk_id": "20260905105541c727e95f3f5ce7e4",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "2026090510554133d77f04b8f34f93",
+              "score": 0.5363039970397949
+            },
+            {
+              "rank": 5,
+              "chunk_id": "202609051055410b22050ce9fa5ee4",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "20260905105541c03e0bc88fd1be95",
+              "score": 0.5363039970397949
+            }
+          ]
+        },
+        {
+          "case_id": "PI-DEV-019",
+          "category": "audit_requirement",
+          "latency_ms": 150.335,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-001-6",
+            "PI-KB-004-6"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-004-1",
+            "PI-KB-004-2",
+            "PI-KB-004-3",
+            "PI-KB-004-4",
+            "PI-KB-004-5",
+            "PI-KB-004-6"
+          ],
+          "matched_evidence": [
+            "PI-KB-004-6"
+          ],
+          "evidence_recall_at_k": 0.5,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905105541c727e95f3f5ce7e4",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "2026090510554133d77f04b8f34f93",
+              "score": 0.5612655282020569
+            },
+            {
+              "rank": 2,
+              "chunk_id": "202609051055410b22050ce9fa5ee4",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "20260905105541c03e0bc88fd1be95",
+              "score": 0.5612655282020569
+            },
+            {
+              "rank": 3,
+              "chunk_id": "20260905105541ea486252a61f64a2",
+              "knowledge_id": "20260905105541be6a574be8a24c47",
+              "knowledge_title": "20260905105541be6a574be8a24c47",
+              "score": 0.5612655282020569
+            },
+            {
+              "rank": 4,
+              "chunk_id": "202609051055412aabff8fec2e5683",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "2026090510554133d77f04b8f34f93",
+              "score": 0.557695746421814
+            },
+            {
+              "rank": 5,
+              "chunk_id": "20260905105541b4d5f40e4cbf817b",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "20260905105541c03e0bc88fd1be95",
+              "score": 0.557695746421814
+            }
+          ]
+        },
+        {
+          "case_id": "PI-DEV-020",
+          "category": "complete_diagnosis",
+          "latency_ms": 133.626,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-001-3",
+            "PI-KB-002-4",
+            "PI-KB-004-1",
+            "PI-KB-005-5"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-001-1",
+            "PI-KB-001-2",
+            "PI-KB-001-3",
+            "PI-KB-001-4",
+            "PI-KB-001-5",
+            "PI-KB-004-4",
+            "PI-KB-004-5",
+            "PI-KB-004-6",
+            "PI-KB-005-1",
+            "PI-KB-005-2",
+            "PI-KB-005-3",
+            "PI-KB-005-4"
+          ],
+          "matched_evidence": [
+            "PI-KB-001-3"
+          ],
+          "evidence_recall_at_k": 0.25,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905104519e998008b1da45c99",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 0.5929102301597595
+            },
+            {
+              "rank": 2,
+              "chunk_id": "20260905104519c6c582ef5d7213cd",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 0.5860241651535034
+            },
+            {
+              "rank": 3,
+              "chunk_id": "20260905105541a35e996518e1d413",
+              "knowledge_id": "20260905105541e1ac16be6db71939",
+              "knowledge_title": "20260905105541e1ac16be6db71939",
+              "score": 0.5710811614990234
+            },
+            {
+              "rank": 4,
+              "chunk_id": "20260905105541c727e95f3f5ce7e4",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "2026090510554133d77f04b8f34f93",
+              "score": 0.5628302097320557
+            },
+            {
+              "rank": 5,
+              "chunk_id": "202609051055410b22050ce9fa5ee4",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "20260905105541c03e0bc88fd1be95",
+              "score": 0.5628302097320557
+            }
+          ]
+        }
+      ]
+    },
+    "bm25": {
+      "summary": {
+        "cases": 20,
+        "cases_with_required_evidence": 20,
+        "evidence_free_cases": 0,
+        "api_errors": 0,
+        "mean_evidence_recall_at_k": 0.1125,
+        "mean_latency_ms": 8.841,
+        "p95_latency_ms": 14.567,
+        "failure_case_ids": [
+          "PI-DEV-001",
+          "PI-DEV-002",
+          "PI-DEV-003",
+          "PI-DEV-004",
+          "PI-DEV-005",
+          "PI-DEV-006",
+          "PI-DEV-007",
+          "PI-DEV-008",
+          "PI-DEV-009",
+          "PI-DEV-010",
+          "PI-DEV-011",
+          "PI-DEV-012",
+          "PI-DEV-013",
+          "PI-DEV-014",
+          "PI-DEV-015",
+          "PI-DEV-016",
+          "PI-DEV-017",
+          "PI-DEV-018",
+          "PI-DEV-019",
+          "PI-DEV-020"
+        ]
+      },
+      "cases": [
+        {
+          "case_id": "PI-DEV-001",
+          "category": "payment_timeout",
+          "latency_ms": 10.124,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-001-3",
+            "PI-KB-003-3"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-001-1",
+            "PI-KB-001-2",
+            "PI-KB-001-3",
+            "PI-KB-001-4",
+            "PI-KB-001-5",
+            "PI-KB-004-1",
+            "PI-KB-004-2",
+            "PI-KB-004-3",
+            "PI-KB-004-4",
+            "PI-KB-004-5",
+            "PI-KB-004-6"
+          ],
+          "matched_evidence": [
+            "PI-KB-001-3"
+          ],
+          "evidence_recall_at_k": 0.5,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905104519c6c582ef5d7213cd",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 0.3333333432674408
+            },
+            {
+              "rank": 2,
+              "chunk_id": "20260905104519e998008b1da45c99",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 0.3333333432674408
+            },
+            {
+              "rank": 3,
+              "chunk_id": "202609051055410b22050ce9fa5ee4",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "20260905105541c03e0bc88fd1be95",
+              "score": 0.3333333432674408
+            },
+            {
+              "rank": 4,
+              "chunk_id": "202609051055412aabff8fec2e5683",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "2026090510554133d77f04b8f34f93",
+              "score": 0.3333333432674408
+            },
+            {
+              "rank": 5,
+              "chunk_id": "2026090510554160fd9db52287e307",
+              "knowledge_id": "20260905105541be6a574be8a24c47",
+              "knowledge_title": "20260905105541be6a574be8a24c47",
+              "score": 0.3333333432674408
+            }
+          ]
+        },
+        {
+          "case_id": "PI-DEV-002",
+          "category": "payment_pending",
+          "latency_ms": 5.938,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-001-4",
+            "PI-KB-005-2"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-001-1",
+            "PI-KB-001-2",
+            "PI-KB-001-3",
+            "PI-KB-001-4",
+            "PI-KB-001-5",
+            "PI-KB-004-1",
+            "PI-KB-004-2",
+            "PI-KB-004-3",
+            "PI-KB-004-4",
+            "PI-KB-004-5",
+            "PI-KB-004-6"
+          ],
+          "matched_evidence": [
+            "PI-KB-001-4"
+          ],
+          "evidence_recall_at_k": 0.5,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905104519c6c582ef5d7213cd",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 0.4000000059604645
+            },
+            {
+              "rank": 2,
+              "chunk_id": "20260905104519e998008b1da45c99",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 0.4000000059604645
+            },
+            {
+              "rank": 3,
+              "chunk_id": "202609051055410b22050ce9fa5ee4",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "20260905105541c03e0bc88fd1be95",
+              "score": 0.4000000059604645
+            },
+            {
+              "rank": 4,
+              "chunk_id": "202609051055412aabff8fec2e5683",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "2026090510554133d77f04b8f34f93",
+              "score": 0.4000000059604645
+            },
+            {
+              "rank": 5,
+              "chunk_id": "2026090510554160fd9db52287e307",
+              "knowledge_id": "20260905105541be6a574be8a24c47",
+              "knowledge_title": "20260905105541be6a574be8a24c47",
+              "score": 0.4000000059604645
+            }
+          ]
+        },
+        {
+          "case_id": "PI-DEV-003",
+          "category": "callback_transient_error",
+          "latency_ms": 4.463,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-002-4",
+            "PI-KB-004-1"
+          ],
+          "retrieved_evidence": [],
+          "matched_evidence": [],
+          "evidence_recall_at_k": 0.0,
+          "results": []
+        },
+        {
+          "case_id": "PI-DEV-004",
+          "category": "callback_signature",
+          "latency_ms": 15.145,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-002-5"
+          ],
+          "retrieved_evidence": [],
+          "matched_evidence": [],
+          "evidence_recall_at_k": 0.0,
+          "results": []
+        },
+        {
+          "case_id": "PI-DEV-005",
+          "category": "idempotency",
+          "latency_ms": 13.523,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-004-3",
+            "PI-KB-004-4"
+          ],
+          "retrieved_evidence": [],
+          "matched_evidence": [],
+          "evidence_recall_at_k": 0.0,
+          "results": []
+        },
+        {
+          "case_id": "PI-DEV-006",
+          "category": "amount_mismatch",
+          "latency_ms": 14.567,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-003-5",
+            "PI-KB-005-1"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-001-4",
+            "PI-KB-001-5"
+          ],
+          "matched_evidence": [],
+          "evidence_recall_at_k": 0.0,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905104519e998008b1da45c99",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 0.1666666716337204
+            }
+          ]
+        },
+        {
+          "case_id": "PI-DEV-007",
+          "category": "cancelled_then_paid",
+          "latency_ms": 4.695,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-003-4",
+            "PI-KB-005-1"
+          ],
+          "retrieved_evidence": [],
+          "matched_evidence": [],
+          "evidence_recall_at_k": 0.0,
+          "results": []
+        },
+        {
+          "case_id": "PI-DEV-008",
+          "category": "duplicate_callback",
+          "latency_ms": 14.258,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-002-2"
+          ],
+          "retrieved_evidence": [],
+          "matched_evidence": [],
+          "evidence_recall_at_k": 0.0,
+          "results": []
+        },
+        {
+          "case_id": "PI-DEV-009",
+          "category": "missing_order_id",
+          "latency_ms": 14.331,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-001-2"
+          ],
+          "retrieved_evidence": [],
+          "matched_evidence": [],
+          "evidence_recall_at_k": 0.0,
+          "results": []
+        },
+        {
+          "case_id": "PI-DEV-010",
+          "category": "no_callback_log",
+          "latency_ms": 4.685,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-005-4"
+          ],
+          "retrieved_evidence": [],
+          "matched_evidence": [],
+          "evidence_recall_at_k": 0.0,
+          "results": []
+        },
+        {
+          "case_id": "PI-DEV-011",
+          "category": "payment_failed",
+          "latency_ms": 4.713,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-001-4",
+            "PI-KB-003-1"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-001-1",
+            "PI-KB-001-2",
+            "PI-KB-001-3",
+            "PI-KB-001-4",
+            "PI-KB-001-5"
+          ],
+          "matched_evidence": [
+            "PI-KB-001-4"
+          ],
+          "evidence_recall_at_k": 0.5,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905104519e998008b1da45c99",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 3.0943779945373535
+            },
+            {
+              "rank": 2,
+              "chunk_id": "20260905104519c6c582ef5d7213cd",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 1.5322128534317017
+            }
+          ]
+        },
+        {
+          "case_id": "PI-DEV-012",
+          "category": "multi_success_payment",
+          "latency_ms": 4.342,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-001-5",
+            "PI-KB-005-1"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-001-4",
+            "PI-KB-001-5",
+            "PI-KB-004-4",
+            "PI-KB-004-5",
+            "PI-KB-004-6"
+          ],
+          "matched_evidence": [
+            "PI-KB-001-5"
+          ],
+          "evidence_recall_at_k": 0.5,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905104519e998008b1da45c99",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 1.7638367414474487
+            },
+            {
+              "rank": 2,
+              "chunk_id": "20260905105541ea486252a61f64a2",
+              "knowledge_id": "20260905105541be6a574be8a24c47",
+              "knowledge_title": "20260905105541be6a574be8a24c47",
+              "score": 1.392378568649292
+            },
+            {
+              "rank": 3,
+              "chunk_id": "202609051055410b22050ce9fa5ee4",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "20260905105541c03e0bc88fd1be95",
+              "score": 1.392378568649292
+            },
+            {
+              "rank": 4,
+              "chunk_id": "20260905105541c727e95f3f5ce7e4",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "2026090510554133d77f04b8f34f93",
+              "score": 1.392378568649292
+            }
+          ]
+        },
+        {
+          "case_id": "PI-DEV-013",
+          "category": "approval_binding",
+          "latency_ms": 14.458,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-004-2"
+          ],
+          "retrieved_evidence": [],
+          "matched_evidence": [],
+          "evidence_recall_at_k": 0.0,
+          "results": []
+        },
+        {
+          "case_id": "PI-DEV-014",
+          "category": "replay_verification",
+          "latency_ms": 4.804,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-002-6",
+            "PI-KB-004-5"
+          ],
+          "retrieved_evidence": [],
+          "matched_evidence": [],
+          "evidence_recall_at_k": 0.0,
+          "results": []
+        },
+        {
+          "case_id": "PI-DEV-015",
+          "category": "stale_order_version",
+          "latency_ms": 4.234,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-003-6"
+          ],
+          "retrieved_evidence": [],
+          "matched_evidence": [],
+          "evidence_recall_at_k": 0.0,
+          "results": []
+        },
+        {
+          "case_id": "PI-DEV-016",
+          "category": "long_pending",
+          "latency_ms": 4.338,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-001-5",
+            "PI-KB-005-1"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-001-1",
+            "PI-KB-001-2",
+            "PI-KB-001-3"
+          ],
+          "matched_evidence": [],
+          "evidence_recall_at_k": 0.0,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905104519c6c582ef5d7213cd",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 2.0311837196350098
+            }
+          ]
+        },
+        {
+          "case_id": "PI-DEV-017",
+          "category": "event_publish_failure",
+          "latency_ms": 14.54,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-002-1",
+            "PI-KB-002-6"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-004-4",
+            "PI-KB-004-5",
+            "PI-KB-004-6"
+          ],
+          "matched_evidence": [],
+          "evidence_recall_at_k": 0.0,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905105541ea486252a61f64a2",
+              "knowledge_id": "20260905105541be6a574be8a24c47",
+              "knowledge_title": "20260905105541be6a574be8a24c47",
+              "score": 1.392378568649292
+            },
+            {
+              "rank": 2,
+              "chunk_id": "202609051055410b22050ce9fa5ee4",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "20260905105541c03e0bc88fd1be95",
+              "score": 1.392378568649292
+            },
+            {
+              "rank": 3,
+              "chunk_id": "20260905105541c727e95f3f5ce7e4",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "2026090510554133d77f04b8f34f93",
+              "score": 1.392378568649292
+            }
+          ]
+        },
+        {
+          "case_id": "PI-DEV-018",
+          "category": "evidence_insufficient",
+          "latency_ms": 4.67,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-005-3",
+            "PI-KB-005-4"
+          ],
+          "retrieved_evidence": [],
+          "matched_evidence": [],
+          "evidence_recall_at_k": 0.0,
+          "results": []
+        },
+        {
+          "case_id": "PI-DEV-019",
+          "category": "audit_requirement",
+          "latency_ms": 13.706,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-001-6",
+            "PI-KB-004-6"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-001-4",
+            "PI-KB-001-5"
+          ],
+          "matched_evidence": [],
+          "evidence_recall_at_k": 0.0,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905104519e998008b1da45c99",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 0.3333333432674408
+            }
+          ]
+        },
+        {
+          "case_id": "PI-DEV-020",
+          "category": "complete_diagnosis",
+          "latency_ms": 5.278,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-001-3",
+            "PI-KB-002-4",
+            "PI-KB-004-1",
+            "PI-KB-005-5"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-001-1",
+            "PI-KB-001-2",
+            "PI-KB-001-3",
+            "PI-KB-001-4",
+            "PI-KB-001-5"
+          ],
+          "matched_evidence": [
+            "PI-KB-001-3"
+          ],
+          "evidence_recall_at_k": 0.25,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905104519e998008b1da45c99",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 3.0943779945373535
+            },
+            {
+              "rank": 2,
+              "chunk_id": "20260905104519c6c582ef5d7213cd",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 1.5322128534317017
+            }
+          ]
+        }
+      ]
+    },
+    "hybrid": {
+      "summary": {
+        "cases": 20,
+        "cases_with_required_evidence": 20,
+        "evidence_free_cases": 0,
+        "api_errors": 0,
+        "mean_evidence_recall_at_k": 0.5625,
+        "mean_latency_ms": 169.887,
+        "p95_latency_ms": 216.887,
+        "failure_case_ids": [
+          "PI-DEV-001",
+          "PI-DEV-003",
+          "PI-DEV-004",
+          "PI-DEV-006",
+          "PI-DEV-007",
+          "PI-DEV-008",
+          "PI-DEV-011",
+          "PI-DEV-014",
+          "PI-DEV-015",
+          "PI-DEV-017",
+          "PI-DEV-019",
+          "PI-DEV-020"
+        ]
+      },
+      "cases": [
+        {
+          "case_id": "PI-DEV-001",
+          "category": "payment_timeout",
+          "latency_ms": 209.004,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-001-3",
+            "PI-KB-003-3"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-001-1",
+            "PI-KB-001-2",
+            "PI-KB-001-3",
+            "PI-KB-001-4",
+            "PI-KB-001-5",
+            "PI-KB-004-1",
+            "PI-KB-004-2",
+            "PI-KB-004-3",
+            "PI-KB-004-4",
+            "PI-KB-004-5",
+            "PI-KB-004-6",
+            "PI-KB-005-1",
+            "PI-KB-005-2",
+            "PI-KB-005-3",
+            "PI-KB-005-4"
+          ],
+          "matched_evidence": [
+            "PI-KB-001-3"
+          ],
+          "evidence_recall_at_k": 0.5,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905104519e998008b1da45c99",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 0.016261236742138863
+            },
+            {
+              "rank": 2,
+              "chunk_id": "20260905104519c6c582ef5d7213cd",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 0.016261236742138863
+            },
+            {
+              "rank": 3,
+              "chunk_id": "20260905105541a35e996518e1d413",
+              "knowledge_id": "20260905105541e1ac16be6db71939",
+              "knowledge_title": "20260905105541e1ac16be6db71939",
+              "score": 0.015512265264987946
+            },
+            {
+              "rank": 4,
+              "chunk_id": "202609051055412aabff8fec2e5683",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "2026090510554133d77f04b8f34f93",
+              "score": 0.015504807233810425
+            },
+            {
+              "rank": 5,
+              "chunk_id": "202609051055410b22050ce9fa5ee4",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "20260905105541c03e0bc88fd1be95",
+              "score": 0.01518288441002369
+            }
+          ]
+        },
+        {
+          "case_id": "PI-DEV-002",
+          "category": "payment_pending",
+          "latency_ms": 166.417,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-001-4",
+            "PI-KB-005-2"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-001-1",
+            "PI-KB-001-2",
+            "PI-KB-001-3",
+            "PI-KB-001-4",
+            "PI-KB-001-5",
+            "PI-KB-004-1",
+            "PI-KB-004-2",
+            "PI-KB-004-3",
+            "PI-KB-004-4",
+            "PI-KB-004-5",
+            "PI-KB-004-6",
+            "PI-KB-005-1",
+            "PI-KB-005-2",
+            "PI-KB-005-3",
+            "PI-KB-005-4"
+          ],
+          "matched_evidence": [
+            "PI-KB-001-4",
+            "PI-KB-005-2"
+          ],
+          "evidence_recall_at_k": 1.0,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905104519e998008b1da45c99",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 0.016261236742138863
+            },
+            {
+              "rank": 2,
+              "chunk_id": "20260905104519c6c582ef5d7213cd",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 0.016261236742138863
+            },
+            {
+              "rank": 3,
+              "chunk_id": "202609051055410b22050ce9fa5ee4",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "20260905105541c03e0bc88fd1be95",
+              "score": 0.015512265264987946
+            },
+            {
+              "rank": 4,
+              "chunk_id": "20260905105541a35e996518e1d413",
+              "knowledge_id": "20260905105541e1ac16be6db71939",
+              "knowledge_title": "20260905105541e1ac16be6db71939",
+              "score": 0.015512265264987946
+            },
+            {
+              "rank": 5,
+              "chunk_id": "202609051055412aabff8fec2e5683",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "2026090510554133d77f04b8f34f93",
+              "score": 0.015165440738201141
+            }
+          ]
+        },
+        {
+          "case_id": "PI-DEV-003",
+          "category": "callback_transient_error",
+          "latency_ms": 128.631,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-002-4",
+            "PI-KB-004-1"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-001-1",
+            "PI-KB-001-2",
+            "PI-KB-001-3",
+            "PI-KB-001-4",
+            "PI-KB-001-5",
+            "PI-KB-001-6",
+            "PI-KB-004-4",
+            "PI-KB-004-5",
+            "PI-KB-004-6",
+            "PI-KB-005-1",
+            "PI-KB-005-2",
+            "PI-KB-005-3",
+            "PI-KB-005-4"
+          ],
+          "matched_evidence": [],
+          "evidence_recall_at_k": 0.0,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905105541a35e996518e1d413",
+              "knowledge_id": "20260905105541e1ac16be6db71939",
+              "knowledge_title": "20260905105541e1ac16be6db71939",
+              "score": 0.008196720853447914
+            },
+            {
+              "rank": 2,
+              "chunk_id": "20260905104519c6c582ef5d7213cd",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 0.008064515888690948
+            },
+            {
+              "rank": 3,
+              "chunk_id": "20260905104519e998008b1da45c99",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 0.007936508394777775
+            },
+            {
+              "rank": 4,
+              "chunk_id": "20260905104519f3490f69c2f53aac",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 0.0078125
+            },
+            {
+              "rank": 5,
+              "chunk_id": "20260905105541c727e95f3f5ce7e4",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "2026090510554133d77f04b8f34f93",
+              "score": 0.007692307699471712
+            }
+          ]
+        },
+        {
+          "case_id": "PI-DEV-004",
+          "category": "callback_signature",
+          "latency_ms": 134.348,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-002-5"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-001-6",
+            "PI-KB-004-4",
+            "PI-KB-004-5",
+            "PI-KB-004-6",
+            "PI-KB-005-1",
+            "PI-KB-005-2",
+            "PI-KB-005-3",
+            "PI-KB-005-4"
+          ],
+          "matched_evidence": [],
+          "evidence_recall_at_k": 0.0,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905105541c727e95f3f5ce7e4",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "2026090510554133d77f04b8f34f93",
+              "score": 0.008196720853447914
+            },
+            {
+              "rank": 2,
+              "chunk_id": "202609051055410b22050ce9fa5ee4",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "20260905105541c03e0bc88fd1be95",
+              "score": 0.008064515888690948
+            },
+            {
+              "rank": 3,
+              "chunk_id": "20260905105541ea486252a61f64a2",
+              "knowledge_id": "20260905105541be6a574be8a24c47",
+              "knowledge_title": "20260905105541be6a574be8a24c47",
+              "score": 0.007936508394777775
+            },
+            {
+              "rank": 4,
+              "chunk_id": "20260905104519f3490f69c2f53aac",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 0.0078125
+            },
+            {
+              "rank": 5,
+              "chunk_id": "20260905105541a35e996518e1d413",
+              "knowledge_id": "20260905105541e1ac16be6db71939",
+              "knowledge_title": "20260905105541e1ac16be6db71939",
+              "score": 0.007692307699471712
+            }
+          ]
+        },
+        {
+          "case_id": "PI-DEV-005",
+          "category": "idempotency",
+          "latency_ms": 134.203,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-004-3",
+            "PI-KB-004-4"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-004-1",
+            "PI-KB-004-2",
+            "PI-KB-004-3",
+            "PI-KB-004-4",
+            "PI-KB-004-5",
+            "PI-KB-004-6"
+          ],
+          "matched_evidence": [
+            "PI-KB-004-3",
+            "PI-KB-004-4"
+          ],
+          "evidence_recall_at_k": 1.0,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905105541c727e95f3f5ce7e4",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "2026090510554133d77f04b8f34f93",
+              "score": 0.008196720853447914
+            },
+            {
+              "rank": 2,
+              "chunk_id": "202609051055410b22050ce9fa5ee4",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "20260905105541c03e0bc88fd1be95",
+              "score": 0.008064515888690948
+            },
+            {
+              "rank": 3,
+              "chunk_id": "20260905105541ea486252a61f64a2",
+              "knowledge_id": "20260905105541be6a574be8a24c47",
+              "knowledge_title": "20260905105541be6a574be8a24c47",
+              "score": 0.007936508394777775
+            },
+            {
+              "rank": 4,
+              "chunk_id": "202609051055412aabff8fec2e5683",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "2026090510554133d77f04b8f34f93",
+              "score": 0.0078125
+            },
+            {
+              "rank": 5,
+              "chunk_id": "20260905105541b4d5f40e4cbf817b",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "20260905105541c03e0bc88fd1be95",
+              "score": 0.007692307699471712
+            }
+          ]
+        },
+        {
+          "case_id": "PI-DEV-006",
+          "category": "amount_mismatch",
+          "latency_ms": 181.423,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-003-5",
+            "PI-KB-005-1"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-001-1",
+            "PI-KB-001-2",
+            "PI-KB-001-3",
+            "PI-KB-001-4",
+            "PI-KB-001-5",
+            "PI-KB-001-6",
+            "PI-KB-004-1",
+            "PI-KB-004-2",
+            "PI-KB-004-3",
+            "PI-KB-005-1",
+            "PI-KB-005-2",
+            "PI-KB-005-3",
+            "PI-KB-005-4"
+          ],
+          "matched_evidence": [
+            "PI-KB-005-1"
+          ],
+          "evidence_recall_at_k": 0.5,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905104519e998008b1da45c99",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 0.016133228316903114
+            },
+            {
+              "rank": 2,
+              "chunk_id": "20260905105541a35e996518e1d413",
+              "knowledge_id": "20260905105541e1ac16be6db71939",
+              "knowledge_title": "20260905105541e1ac16be6db71939",
+              "score": 0.008196720853447914
+            },
+            {
+              "rank": 3,
+              "chunk_id": "20260905104519c6c582ef5d7213cd",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 0.008064515888690948
+            },
+            {
+              "rank": 4,
+              "chunk_id": "20260905104519f3490f69c2f53aac",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 0.0078125
+            },
+            {
+              "rank": 5,
+              "chunk_id": "202609051055412aabff8fec2e5683",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "2026090510554133d77f04b8f34f93",
+              "score": 0.007692307699471712
+            }
+          ]
+        },
+        {
+          "case_id": "PI-DEV-007",
+          "category": "cancelled_then_paid",
+          "latency_ms": 168.068,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-003-4",
+            "PI-KB-005-1"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-001-4",
+            "PI-KB-001-5",
+            "PI-KB-001-6",
+            "PI-KB-004-1",
+            "PI-KB-004-2",
+            "PI-KB-004-3",
+            "PI-KB-005-1",
+            "PI-KB-005-2",
+            "PI-KB-005-3",
+            "PI-KB-005-4"
+          ],
+          "matched_evidence": [
+            "PI-KB-005-1"
+          ],
+          "evidence_recall_at_k": 0.5,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905104519e998008b1da45c99",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 0.008196720853447914
+            },
+            {
+              "rank": 2,
+              "chunk_id": "20260905105541a35e996518e1d413",
+              "knowledge_id": "20260905105541e1ac16be6db71939",
+              "knowledge_title": "20260905105541e1ac16be6db71939",
+              "score": 0.008064515888690948
+            },
+            {
+              "rank": 3,
+              "chunk_id": "20260905104519f3490f69c2f53aac",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 0.007936508394777775
+            },
+            {
+              "rank": 4,
+              "chunk_id": "202609051055412aabff8fec2e5683",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "2026090510554133d77f04b8f34f93",
+              "score": 0.0078125
+            },
+            {
+              "rank": 5,
+              "chunk_id": "20260905105541b4d5f40e4cbf817b",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "20260905105541c03e0bc88fd1be95",
+              "score": 0.007692307699471712
+            }
+          ]
+        },
+        {
+          "case_id": "PI-DEV-008",
+          "category": "duplicate_callback",
+          "latency_ms": 145.425,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-002-2"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-004-1",
+            "PI-KB-004-2",
+            "PI-KB-004-3",
+            "PI-KB-004-4",
+            "PI-KB-004-5",
+            "PI-KB-004-6"
+          ],
+          "matched_evidence": [],
+          "evidence_recall_at_k": 0.0,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905105541c727e95f3f5ce7e4",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "2026090510554133d77f04b8f34f93",
+              "score": 0.008196720853447914
+            },
+            {
+              "rank": 2,
+              "chunk_id": "202609051055410b22050ce9fa5ee4",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "20260905105541c03e0bc88fd1be95",
+              "score": 0.008064515888690948
+            },
+            {
+              "rank": 3,
+              "chunk_id": "20260905105541ea486252a61f64a2",
+              "knowledge_id": "20260905105541be6a574be8a24c47",
+              "knowledge_title": "20260905105541be6a574be8a24c47",
+              "score": 0.007936508394777775
+            },
+            {
+              "rank": 4,
+              "chunk_id": "202609051055412aabff8fec2e5683",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "2026090510554133d77f04b8f34f93",
+              "score": 0.0078125
+            },
+            {
+              "rank": 5,
+              "chunk_id": "20260905105541b4d5f40e4cbf817b",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "20260905105541c03e0bc88fd1be95",
+              "score": 0.007692307699471712
+            }
+          ]
+        },
+        {
+          "case_id": "PI-DEV-009",
+          "category": "missing_order_id",
+          "latency_ms": 173.797,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-001-2"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-001-1",
+            "PI-KB-001-2",
+            "PI-KB-001-3",
+            "PI-KB-001-4",
+            "PI-KB-001-5",
+            "PI-KB-004-4",
+            "PI-KB-004-5",
+            "PI-KB-004-6",
+            "PI-KB-005-1",
+            "PI-KB-005-2",
+            "PI-KB-005-3",
+            "PI-KB-005-4"
+          ],
+          "matched_evidence": [
+            "PI-KB-001-2"
+          ],
+          "evidence_recall_at_k": 1.0,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905104519c6c582ef5d7213cd",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 0.008196720853447914
+            },
+            {
+              "rank": 2,
+              "chunk_id": "20260905104519e998008b1da45c99",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 0.008064515888690948
+            },
+            {
+              "rank": 3,
+              "chunk_id": "20260905105541a35e996518e1d413",
+              "knowledge_id": "20260905105541e1ac16be6db71939",
+              "knowledge_title": "20260905105541e1ac16be6db71939",
+              "score": 0.007936508394777775
+            },
+            {
+              "rank": 4,
+              "chunk_id": "20260905105541c727e95f3f5ce7e4",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "2026090510554133d77f04b8f34f93",
+              "score": 0.0078125
+            },
+            {
+              "rank": 5,
+              "chunk_id": "202609051055410b22050ce9fa5ee4",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "20260905105541c03e0bc88fd1be95",
+              "score": 0.007692307699471712
+            }
+          ]
+        },
+        {
+          "case_id": "PI-DEV-010",
+          "category": "no_callback_log",
+          "latency_ms": 149.01,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-005-4"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-001-4",
+            "PI-KB-001-5",
+            "PI-KB-004-4",
+            "PI-KB-004-5",
+            "PI-KB-004-6",
+            "PI-KB-005-1",
+            "PI-KB-005-2",
+            "PI-KB-005-3",
+            "PI-KB-005-4"
+          ],
+          "matched_evidence": [
+            "PI-KB-005-4"
+          ],
+          "evidence_recall_at_k": 1.0,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905104519e998008b1da45c99",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 0.008196720853447914
+            },
+            {
+              "rank": 2,
+              "chunk_id": "20260905105541c727e95f3f5ce7e4",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "2026090510554133d77f04b8f34f93",
+              "score": 0.008064515888690948
+            },
+            {
+              "rank": 3,
+              "chunk_id": "202609051055410b22050ce9fa5ee4",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "20260905105541c03e0bc88fd1be95",
+              "score": 0.007936508394777775
+            },
+            {
+              "rank": 4,
+              "chunk_id": "20260905105541ea486252a61f64a2",
+              "knowledge_id": "20260905105541be6a574be8a24c47",
+              "knowledge_title": "20260905105541be6a574be8a24c47",
+              "score": 0.0078125
+            },
+            {
+              "rank": 5,
+              "chunk_id": "20260905105541a35e996518e1d413",
+              "knowledge_id": "20260905105541e1ac16be6db71939",
+              "knowledge_title": "20260905105541e1ac16be6db71939",
+              "score": 0.007692307699471712
+            }
+          ]
+        },
+        {
+          "case_id": "PI-DEV-011",
+          "category": "payment_failed",
+          "latency_ms": 178.836,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-001-4",
+            "PI-KB-003-1"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-001-1",
+            "PI-KB-001-2",
+            "PI-KB-001-3",
+            "PI-KB-001-4",
+            "PI-KB-001-5",
+            "PI-KB-004-4",
+            "PI-KB-004-5",
+            "PI-KB-004-6",
+            "PI-KB-005-1",
+            "PI-KB-005-2",
+            "PI-KB-005-3",
+            "PI-KB-005-4"
+          ],
+          "matched_evidence": [
+            "PI-KB-001-4"
+          ],
+          "evidence_recall_at_k": 0.5,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905104519e998008b1da45c99",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 0.016393441706895828
+            },
+            {
+              "rank": 2,
+              "chunk_id": "20260905104519c6c582ef5d7213cd",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 0.01600102335214615
+            },
+            {
+              "rank": 3,
+              "chunk_id": "20260905105541a35e996518e1d413",
+              "knowledge_id": "20260905105541e1ac16be6db71939",
+              "knowledge_title": "20260905105541e1ac16be6db71939",
+              "score": 0.008064515888690948
+            },
+            {
+              "rank": 4,
+              "chunk_id": "20260905105541c727e95f3f5ce7e4",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "2026090510554133d77f04b8f34f93",
+              "score": 0.0078125
+            },
+            {
+              "rank": 5,
+              "chunk_id": "202609051055410b22050ce9fa5ee4",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "20260905105541c03e0bc88fd1be95",
+              "score": 0.007692307699471712
+            }
+          ]
+        },
+        {
+          "case_id": "PI-DEV-012",
+          "category": "multi_success_payment",
+          "latency_ms": 210.13,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-001-5",
+            "PI-KB-005-1"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-001-4",
+            "PI-KB-001-5",
+            "PI-KB-004-4",
+            "PI-KB-004-5",
+            "PI-KB-004-6",
+            "PI-KB-005-1",
+            "PI-KB-005-2",
+            "PI-KB-005-3",
+            "PI-KB-005-4"
+          ],
+          "matched_evidence": [
+            "PI-KB-001-5",
+            "PI-KB-005-1"
+          ],
+          "evidence_recall_at_k": 1.0,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905104519e998008b1da45c99",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 0.016393441706895828
+            },
+            {
+              "rank": 2,
+              "chunk_id": "20260905105541ea486252a61f64a2",
+              "knowledge_id": "20260905105541be6a574be8a24c47",
+              "knowledge_title": "20260905105541be6a574be8a24c47",
+              "score": 0.015527202747762203
+            },
+            {
+              "rank": 3,
+              "chunk_id": "202609051055410b22050ce9fa5ee4",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "20260905105541c03e0bc88fd1be95",
+              "score": 0.015512265264987946
+            },
+            {
+              "rank": 4,
+              "chunk_id": "20260905105541c727e95f3f5ce7e4",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "2026090510554133d77f04b8f34f93",
+              "score": 0.015504807233810425
+            },
+            {
+              "rank": 5,
+              "chunk_id": "20260905105541a35e996518e1d413",
+              "knowledge_id": "20260905105541e1ac16be6db71939",
+              "knowledge_title": "20260905105541e1ac16be6db71939",
+              "score": 0.008064515888690948
+            }
+          ]
+        },
+        {
+          "case_id": "PI-DEV-013",
+          "category": "approval_binding",
+          "latency_ms": 141.133,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-004-2"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-004-1",
+            "PI-KB-004-2",
+            "PI-KB-004-3",
+            "PI-KB-004-4",
+            "PI-KB-004-5",
+            "PI-KB-004-6"
+          ],
+          "matched_evidence": [
+            "PI-KB-004-2"
+          ],
+          "evidence_recall_at_k": 1.0,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "202609051055412aabff8fec2e5683",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "2026090510554133d77f04b8f34f93",
+              "score": 0.008196720853447914
+            },
+            {
+              "rank": 2,
+              "chunk_id": "20260905105541b4d5f40e4cbf817b",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "20260905105541c03e0bc88fd1be95",
+              "score": 0.008064515888690948
+            },
+            {
+              "rank": 3,
+              "chunk_id": "2026090510554160fd9db52287e307",
+              "knowledge_id": "20260905105541be6a574be8a24c47",
+              "knowledge_title": "20260905105541be6a574be8a24c47",
+              "score": 0.007936508394777775
+            },
+            {
+              "rank": 4,
+              "chunk_id": "20260905105541c727e95f3f5ce7e4",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "2026090510554133d77f04b8f34f93",
+              "score": 0.0078125
+            },
+            {
+              "rank": 5,
+              "chunk_id": "202609051055410b22050ce9fa5ee4",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "20260905105541c03e0bc88fd1be95",
+              "score": 0.007692307699471712
+            }
+          ]
+        },
+        {
+          "case_id": "PI-DEV-014",
+          "category": "replay_verification",
+          "latency_ms": 116.98,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-002-6",
+            "PI-KB-004-5"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-004-1",
+            "PI-KB-004-2",
+            "PI-KB-004-3",
+            "PI-KB-004-4",
+            "PI-KB-004-5",
+            "PI-KB-004-6"
+          ],
+          "matched_evidence": [
+            "PI-KB-004-5"
+          ],
+          "evidence_recall_at_k": 0.5,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905105541c727e95f3f5ce7e4",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "2026090510554133d77f04b8f34f93",
+              "score": 0.008196720853447914
+            },
+            {
+              "rank": 2,
+              "chunk_id": "202609051055410b22050ce9fa5ee4",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "20260905105541c03e0bc88fd1be95",
+              "score": 0.008064515888690948
+            },
+            {
+              "rank": 3,
+              "chunk_id": "20260905105541ea486252a61f64a2",
+              "knowledge_id": "20260905105541be6a574be8a24c47",
+              "knowledge_title": "20260905105541be6a574be8a24c47",
+              "score": 0.007936508394777775
+            },
+            {
+              "rank": 4,
+              "chunk_id": "202609051055412aabff8fec2e5683",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "2026090510554133d77f04b8f34f93",
+              "score": 0.0078125
+            },
+            {
+              "rank": 5,
+              "chunk_id": "20260905105541b4d5f40e4cbf817b",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "20260905105541c03e0bc88fd1be95",
+              "score": 0.007692307699471712
+            }
+          ]
+        },
+        {
+          "case_id": "PI-DEV-015",
+          "category": "stale_order_version",
+          "latency_ms": 216.887,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-003-6"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-001-4",
+            "PI-KB-001-5",
+            "PI-KB-001-6",
+            "PI-KB-004-4",
+            "PI-KB-004-5",
+            "PI-KB-004-6",
+            "PI-KB-005-5"
+          ],
+          "matched_evidence": [],
+          "evidence_recall_at_k": 0.0,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905104519f3490f69c2f53aac",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 0.008196720853447914
+            },
+            {
+              "rank": 2,
+              "chunk_id": "20260905104519e998008b1da45c99",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 0.008064515888690948
+            },
+            {
+              "rank": 3,
+              "chunk_id": "20260905105541aa9127f3a40db3e5",
+              "knowledge_id": "20260905105541e1ac16be6db71939",
+              "knowledge_title": "20260905105541e1ac16be6db71939",
+              "score": 0.007936508394777775
+            },
+            {
+              "rank": 4,
+              "chunk_id": "20260905105541c727e95f3f5ce7e4",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "2026090510554133d77f04b8f34f93",
+              "score": 0.0078125
+            },
+            {
+              "rank": 5,
+              "chunk_id": "202609051055410b22050ce9fa5ee4",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "20260905105541c03e0bc88fd1be95",
+              "score": 0.007692307699471712
+            }
+          ]
+        },
+        {
+          "case_id": "PI-DEV-016",
+          "category": "long_pending",
+          "latency_ms": 202.596,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-001-5",
+            "PI-KB-005-1"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-001-1",
+            "PI-KB-001-2",
+            "PI-KB-001-3",
+            "PI-KB-001-4",
+            "PI-KB-001-5",
+            "PI-KB-001-6",
+            "PI-KB-004-4",
+            "PI-KB-004-5",
+            "PI-KB-004-6",
+            "PI-KB-005-1",
+            "PI-KB-005-2",
+            "PI-KB-005-3",
+            "PI-KB-005-4"
+          ],
+          "matched_evidence": [
+            "PI-KB-001-5",
+            "PI-KB-005-1"
+          ],
+          "evidence_recall_at_k": 1.0,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905104519c6c582ef5d7213cd",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 0.016261236742138863
+            },
+            {
+              "rank": 2,
+              "chunk_id": "20260905104519e998008b1da45c99",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 0.008196720853447914
+            },
+            {
+              "rank": 3,
+              "chunk_id": "20260905105541a35e996518e1d413",
+              "knowledge_id": "20260905105541e1ac16be6db71939",
+              "knowledge_title": "20260905105541e1ac16be6db71939",
+              "score": 0.007936508394777775
+            },
+            {
+              "rank": 4,
+              "chunk_id": "20260905104519f3490f69c2f53aac",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 0.0078125
+            },
+            {
+              "rank": 5,
+              "chunk_id": "20260905105541c727e95f3f5ce7e4",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "2026090510554133d77f04b8f34f93",
+              "score": 0.007692307699471712
+            }
+          ]
+        },
+        {
+          "case_id": "PI-DEV-017",
+          "category": "event_publish_failure",
+          "latency_ms": 168.86,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-002-1",
+            "PI-KB-002-6"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-004-1",
+            "PI-KB-004-2",
+            "PI-KB-004-3",
+            "PI-KB-004-4",
+            "PI-KB-004-5",
+            "PI-KB-004-6"
+          ],
+          "matched_evidence": [],
+          "evidence_recall_at_k": 0.0,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905105541ea486252a61f64a2",
+              "knowledge_id": "20260905105541be6a574be8a24c47",
+              "knowledge_title": "20260905105541be6a574be8a24c47",
+              "score": 0.01577247865498066
+            },
+            {
+              "rank": 2,
+              "chunk_id": "202609051055410b22050ce9fa5ee4",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "20260905105541c03e0bc88fd1be95",
+              "score": 0.015756823122501373
+            },
+            {
+              "rank": 3,
+              "chunk_id": "20260905105541c727e95f3f5ce7e4",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "2026090510554133d77f04b8f34f93",
+              "score": 0.0157490074634552
+            },
+            {
+              "rank": 4,
+              "chunk_id": "202609051055412aabff8fec2e5683",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "2026090510554133d77f04b8f34f93",
+              "score": 0.008196720853447914
+            },
+            {
+              "rank": 5,
+              "chunk_id": "20260905105541b4d5f40e4cbf817b",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "20260905105541c03e0bc88fd1be95",
+              "score": 0.008064515888690948
+            }
+          ]
+        },
+        {
+          "case_id": "PI-DEV-018",
+          "category": "evidence_insufficient",
+          "latency_ms": 142.096,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-005-3",
+            "PI-KB-005-4"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-001-1",
+            "PI-KB-001-2",
+            "PI-KB-001-3",
+            "PI-KB-001-4",
+            "PI-KB-001-5",
+            "PI-KB-004-4",
+            "PI-KB-004-5",
+            "PI-KB-004-6",
+            "PI-KB-005-1",
+            "PI-KB-005-2",
+            "PI-KB-005-3",
+            "PI-KB-005-4"
+          ],
+          "matched_evidence": [
+            "PI-KB-005-3",
+            "PI-KB-005-4"
+          ],
+          "evidence_recall_at_k": 1.0,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905104519e998008b1da45c99",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 0.008196720853447914
+            },
+            {
+              "rank": 2,
+              "chunk_id": "20260905104519c6c582ef5d7213cd",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 0.008064515888690948
+            },
+            {
+              "rank": 3,
+              "chunk_id": "20260905105541a35e996518e1d413",
+              "knowledge_id": "20260905105541e1ac16be6db71939",
+              "knowledge_title": "20260905105541e1ac16be6db71939",
+              "score": 0.007936508394777775
+            },
+            {
+              "rank": 4,
+              "chunk_id": "20260905105541c727e95f3f5ce7e4",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "2026090510554133d77f04b8f34f93",
+              "score": 0.0078125
+            },
+            {
+              "rank": 5,
+              "chunk_id": "202609051055410b22050ce9fa5ee4",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "20260905105541c03e0bc88fd1be95",
+              "score": 0.007692307699471712
+            }
+          ]
+        },
+        {
+          "case_id": "PI-DEV-019",
+          "category": "audit_requirement",
+          "latency_ms": 174.25,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-001-6",
+            "PI-KB-004-6"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-001-4",
+            "PI-KB-001-5",
+            "PI-KB-004-1",
+            "PI-KB-004-2",
+            "PI-KB-004-3",
+            "PI-KB-004-4",
+            "PI-KB-004-5",
+            "PI-KB-004-6"
+          ],
+          "matched_evidence": [
+            "PI-KB-004-6"
+          ],
+          "evidence_recall_at_k": 0.5,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905104519e998008b1da45c99",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 0.01554966252297163
+            },
+            {
+              "rank": 2,
+              "chunk_id": "20260905105541c727e95f3f5ce7e4",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "2026090510554133d77f04b8f34f93",
+              "score": 0.008196720853447914
+            },
+            {
+              "rank": 3,
+              "chunk_id": "202609051055410b22050ce9fa5ee4",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "20260905105541c03e0bc88fd1be95",
+              "score": 0.008064515888690948
+            },
+            {
+              "rank": 4,
+              "chunk_id": "20260905105541ea486252a61f64a2",
+              "knowledge_id": "20260905105541be6a574be8a24c47",
+              "knowledge_title": "20260905105541be6a574be8a24c47",
+              "score": 0.007936508394777775
+            },
+            {
+              "rank": 5,
+              "chunk_id": "202609051055412aabff8fec2e5683",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "2026090510554133d77f04b8f34f93",
+              "score": 0.0078125
+            }
+          ]
+        },
+        {
+          "case_id": "PI-DEV-020",
+          "category": "complete_diagnosis",
+          "latency_ms": 255.642,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-001-3",
+            "PI-KB-002-4",
+            "PI-KB-004-1",
+            "PI-KB-005-5"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-001-1",
+            "PI-KB-001-2",
+            "PI-KB-001-3",
+            "PI-KB-001-4",
+            "PI-KB-001-5",
+            "PI-KB-004-4",
+            "PI-KB-004-5",
+            "PI-KB-004-6",
+            "PI-KB-005-1",
+            "PI-KB-005-2",
+            "PI-KB-005-3",
+            "PI-KB-005-4"
+          ],
+          "matched_evidence": [
+            "PI-KB-001-3"
+          ],
+          "evidence_recall_at_k": 0.25,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905104519e998008b1da45c99",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 0.016393441706895828
+            },
+            {
+              "rank": 2,
+              "chunk_id": "20260905104519c6c582ef5d7213cd",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "202609051045197163ec72be9c8773",
+              "score": 0.016129031777381897
+            },
+            {
+              "rank": 3,
+              "chunk_id": "20260905105541a35e996518e1d413",
+              "knowledge_id": "20260905105541e1ac16be6db71939",
+              "knowledge_title": "20260905105541e1ac16be6db71939",
+              "score": 0.007936508394777775
+            },
+            {
+              "rank": 4,
+              "chunk_id": "20260905105541c727e95f3f5ce7e4",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "2026090510554133d77f04b8f34f93",
+              "score": 0.0078125
+            },
+            {
+              "rank": 5,
+              "chunk_id": "202609051055410b22050ce9fa5ee4",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "20260905105541c03e0bc88fd1be95",
+              "score": 0.007692307699471712
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -313,6 +313,20 @@ func TestCapability_RerankEnabledButNilReranker(t *testing.T) {
 	}
 }
 
+func TestCapability_PreservesKnowledgeBaseIDForSourceResolution(t *testing.T) {
+	ret := &capFakeRetriever{hybrid: []*rag.Document{{
+		ChunkID: "chunk-1", KnowledgeID: "knowledge-1", KnowledgeBaseID: "kb-1", Content: "payment callback", Score: 0.9,
+	}}}
+	c := NewRetrievalCapability(ret, nil)
+	result, err := c.Retrieve(context.Background(), 1, []string{"kb-1"}, capBaseQuery())
+	if err != nil {
+		t.Fatalf("Retrieve() error = %v", err)
+	}
+	if got := result.Chunks[0].KnowledgeBaseID; got != "kb-1" {
+		t.Fatalf("KnowledgeBaseID = %q, want kb-1", got)
+	}
+}
+
 // 单片按 rune 截断（保护 CJK），并追加省略标记。
 func TestCapability_TruncatesLongContentByRune(t *testing.T) {
 	long := strings.Repeat("字", capMaxChunkContentChars+50)

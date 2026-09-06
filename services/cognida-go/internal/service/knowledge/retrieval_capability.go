@@ -64,13 +64,14 @@ type GovernedQuery struct {
 
 // GovernedChunk 是受治理后回灌上下文的单个片段（已截断、带出处）。
 type GovernedChunk struct {
-	Content     string
-	Score       float64
-	Source      string // 人类可读出处：文档标题→知识条目→片段 ID→知识库 ID
-	KnowledgeID string
-	ChunkID     string
-	ChunkIndex  int
-	Metadata    map[string]interface{}
+	Content         string
+	Score           float64
+	Source          string // 人类可读出处：文档标题→知识条目→片段 ID→知识库 ID
+	KnowledgeID     string
+	KnowledgeBaseID string
+	ChunkID         string
+	ChunkIndex      int
+	Metadata        map[string]interface{}
 }
 
 // GovernedResult 是一次受治理检索的结果。
@@ -197,13 +198,14 @@ func (c *RetrievalCapability) Retrieve(ctx context.Context, tenantID int64, kbID
 	chunks := make([]GovernedChunk, 0, len(merged))
 	for _, d := range merged {
 		chunks = append(chunks, GovernedChunk{
-			Content:     truncateRunes(d.Content, capMaxChunkContentChars),
-			Score:       float64(d.Score),
-			Source:      chunkSourceLabel(d),
-			KnowledgeID: d.KnowledgeID,
-			ChunkID:     d.ChunkID,
-			ChunkIndex:  d.ChunkIndex,
-			Metadata:    d.Metadata,
+			Content:         truncateRunes(d.Content, capMaxChunkContentChars),
+			Score:           float64(d.Score),
+			Source:          chunkSourceLabel(d),
+			KnowledgeID:     d.KnowledgeID,
+			KnowledgeBaseID: d.KnowledgeBaseID,
+			ChunkID:         d.ChunkID,
+			ChunkIndex:      d.ChunkIndex,
+			Metadata:        d.Metadata,
 		})
 	}
 	return &GovernedResult{Chunks: chunks, HasAnswer: len(chunks) > 0}, nil

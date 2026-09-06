@@ -58,6 +58,12 @@ const routes: RouteRecordRaw[] = [
         meta: { title: '知识库助手' }
       },
       {
+        path: '/payment-incidents',
+        name: 'PaymentIncident',
+        component: () => import('@/views/payment/PaymentIncidentView.vue'),
+        meta: { title: '支付故障核验台' }
+      },
+      {
         path: '/data-agent/:conversationId?',
         name: 'DataAgent',
         component: () => import('@/views/ai/DataAgentView.vue'),
