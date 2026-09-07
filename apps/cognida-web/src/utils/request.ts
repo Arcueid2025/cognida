@@ -8,6 +8,7 @@ export interface ApiResponse<T = any> {
   message: string
   data?: T
   error?: string
+  request_id?: string
 }
 
 // 获取 API 基础 URL

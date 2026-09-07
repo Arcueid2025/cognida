@@ -199,7 +199,17 @@ func (r *Router) setupPaymentIncidentRoutes(api *gin.RouterGroup) {
 	incidents := api.Group("/payment-incidents")
 	incidents.POST("", r.paymentIncidentHandler.Create)
 	incidents.GET("", r.paymentIncidentHandler.List)
+	incidents.GET("/:id", r.paymentIncidentHandler.Get)
+	incidents.PUT("/:id", r.paymentIncidentHandler.UpdateDetails)
 	incidents.POST("/:id/status", r.paymentIncidentHandler.Transition)
+	incidents.POST("/:id/timeline", r.paymentIncidentHandler.AddTimelineNote)
+	incidents.POST("/:id/disposition-drafts", r.paymentIncidentHandler.CreateDispositionDraft)
+	incidents.POST("/disposition-drafts/:draftID/decision", r.paymentIncidentHandler.DecideDispositionDraft)
+	incidents.POST("/disposition-drafts/:draftID/execute", r.paymentIncidentHandler.ExecuteDispositionDraft)
+	read := api.Group("/payment-read")
+	read.GET("/orders/:orderID", r.paymentIncidentHandler.GetSimulatedOrder)
+	read.GET("/orders/:orderID/payments", r.paymentIncidentHandler.GetSimulatedPayments)
+	read.GET("/orders/:orderID/callback-logs", r.paymentIncidentHandler.GetSimulatedCallbackLogs)
 }
 
 // setupAuthRoutes 设置认证路由

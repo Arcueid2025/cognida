@@ -1,0 +1,1578 @@
+{
+  "report_type": "incidentpilot_retrieval_baseline",
+  "generated_at": "2026-09-06T08:32:20.007571+00:00",
+  "dataset_id": "payment-incident-holdout-v1",
+  "configuration": {
+    "base_url": "http://localhost:8080",
+    "kb_id": "2026090510423959ba14d92e0f1e78",
+    "top_k": 5,
+    "min_score": 0.0,
+    "rerank_variants": [
+      "off",
+      "on"
+    ],
+    "modes": [
+      "hybrid"
+    ],
+    "timeout_seconds": 60,
+    "token_source": "COGNIDA_TOKEN/--token"
+  },
+  "notes": [
+    "证据命中通过检索片段正文中的【PI-KB-xxx-x】编号判定。",
+    "无必要证据案例不计入 Recall@K，需另行评估拒答行为。",
+    "本脚本只调用 POST /api/v1/knowledge/search，不写入知识库、Milvus 或评测集。",
+    "启用 on 只用于离线对比；除非 Recall@K 改善且延迟、错误率均可接受，不应修改线上核验台的默认检索设置。"
+  ],
+  "modes": {
+    "hybrid": {
+      "summary": {
+        "cases": 12,
+        "cases_with_required_evidence": 12,
+        "evidence_free_cases": 0,
+        "api_errors": 0,
+        "mean_evidence_recall_at_k": 0.458333,
+        "mean_latency_ms": 159.758,
+        "p95_latency_ms": 232.872,
+        "failure_case_ids": [
+          "PI-HOLDOUT-001",
+          "PI-HOLDOUT-003",
+          "PI-HOLDOUT-004",
+          "PI-HOLDOUT-006",
+          "PI-HOLDOUT-007",
+          "PI-HOLDOUT-008",
+          "PI-HOLDOUT-010",
+          "PI-HOLDOUT-011",
+          "PI-HOLDOUT-012"
+        ]
+      },
+      "cases": [
+        {
+          "case_id": "PI-HOLDOUT-001",
+          "category": "payment_timeout",
+          "latency_ms": 232.872,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-001-3",
+            "PI-KB-003-3"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-001-1",
+            "PI-KB-001-2",
+            "PI-KB-001-3",
+            "PI-KB-001-4",
+            "PI-KB-001-5",
+            "PI-KB-004-1",
+            "PI-KB-004-2",
+            "PI-KB-004-3",
+            "PI-KB-005-1",
+            "PI-KB-005-2",
+            "PI-KB-005-3",
+            "PI-KB-005-4"
+          ],
+          "matched_evidence": [
+            "PI-KB-001-3"
+          ],
+          "evidence_recall_at_k": 0.5,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905104519c6c582ef5d7213cd",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "01-payment-timeout-sop.md",
+              "score": 0.016261236742138863
+            },
+            {
+              "rank": 2,
+              "chunk_id": "20260905105541a35e996518e1d413",
+              "knowledge_id": "20260905105541e1ac16be6db71939",
+              "knowledge_title": "05-incident-triage-and-evidence.md",
+              "score": 0.01600102335214615
+            },
+            {
+              "rank": 3,
+              "chunk_id": "20260905104519e998008b1da45c99",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "01-payment-timeout-sop.md",
+              "score": 0.01577247865498066
+            },
+            {
+              "rank": 4,
+              "chunk_id": "20260905105541b4d5f40e4cbf817b",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "02-callback-failure-sop.md",
+              "score": 0.015289449132978916
+            },
+            {
+              "rank": 5,
+              "chunk_id": "2026090510554160fd9db52287e307",
+              "knowledge_id": "20260905105541be6a574be8a24c47",
+              "knowledge_title": "03-order-payment-state-machine.md",
+              "score": 0.01495535671710968
+            }
+          ]
+        },
+        {
+          "case_id": "PI-HOLDOUT-002",
+          "category": "pending_payment",
+          "latency_ms": 124.761,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-001-4",
+            "PI-KB-005-2"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-001-1",
+            "PI-KB-001-2",
+            "PI-KB-001-3",
+            "PI-KB-001-4",
+            "PI-KB-001-5",
+            "PI-KB-004-4",
+            "PI-KB-004-5",
+            "PI-KB-004-6",
+            "PI-KB-005-1",
+            "PI-KB-005-2",
+            "PI-KB-005-3",
+            "PI-KB-005-4"
+          ],
+          "matched_evidence": [
+            "PI-KB-001-4",
+            "PI-KB-005-2"
+          ],
+          "evidence_recall_at_k": 1.0,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905104519e998008b1da45c99",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "01-payment-timeout-sop.md",
+              "score": 0.016393441706895828
+            },
+            {
+              "rank": 2,
+              "chunk_id": "20260905104519c6c582ef5d7213cd",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "01-payment-timeout-sop.md",
+              "score": 0.01600102335214615
+            },
+            {
+              "rank": 3,
+              "chunk_id": "20260905105541a35e996518e1d413",
+              "knowledge_id": "20260905105541e1ac16be6db71939",
+              "knowledge_title": "05-incident-triage-and-evidence.md",
+              "score": 0.01600102335214615
+            },
+            {
+              "rank": 4,
+              "chunk_id": "20260905105541c727e95f3f5ce7e4",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "04-approval-and-idempotency.md",
+              "score": 0.01504524890333414
+            },
+            {
+              "rank": 5,
+              "chunk_id": "20260905105541ea486252a61f64a2",
+              "knowledge_id": "20260905105541be6a574be8a24c47",
+              "knowledge_title": "03-order-payment-state-machine.md",
+              "score": 0.01495535671710968
+            }
+          ]
+        },
+        {
+          "case_id": "PI-HOLDOUT-003",
+          "category": "callback_signature",
+          "latency_ms": 154.121,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-002-5"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-001-4",
+            "PI-KB-001-5",
+            "PI-KB-004-4",
+            "PI-KB-004-5",
+            "PI-KB-004-6",
+            "PI-KB-005-1",
+            "PI-KB-005-2",
+            "PI-KB-005-3",
+            "PI-KB-005-4"
+          ],
+          "matched_evidence": [],
+          "evidence_recall_at_k": 0.0,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905105541ea486252a61f64a2",
+              "knowledge_id": "20260905105541be6a574be8a24c47",
+              "knowledge_title": "03-order-payment-state-machine.md",
+              "score": 0.016393441706895828
+            },
+            {
+              "rank": 2,
+              "chunk_id": "20260905105541c727e95f3f5ce7e4",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "04-approval-and-idempotency.md",
+              "score": 0.016129031777381897
+            },
+            {
+              "rank": 3,
+              "chunk_id": "202609051055410b22050ce9fa5ee4",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "02-callback-failure-sop.md",
+              "score": 0.01587301678955555
+            },
+            {
+              "rank": 4,
+              "chunk_id": "20260905104519e998008b1da45c99",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "01-payment-timeout-sop.md",
+              "score": 0.015504807233810425
+            },
+            {
+              "rank": 5,
+              "chunk_id": "20260905105541a35e996518e1d413",
+              "knowledge_id": "20260905105541e1ac16be6db71939",
+              "knowledge_title": "05-incident-triage-and-evidence.md",
+              "score": 0.015058876946568489
+            }
+          ]
+        },
+        {
+          "case_id": "PI-HOLDOUT-004",
+          "category": "callback_replay_guard",
+          "latency_ms": 170.041,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-002-4",
+            "PI-KB-004-1"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-001-1",
+            "PI-KB-001-2",
+            "PI-KB-001-3",
+            "PI-KB-001-4",
+            "PI-KB-001-5",
+            "PI-KB-004-4",
+            "PI-KB-004-5",
+            "PI-KB-004-6",
+            "PI-KB-005-1",
+            "PI-KB-005-2",
+            "PI-KB-005-3",
+            "PI-KB-005-4"
+          ],
+          "matched_evidence": [],
+          "evidence_recall_at_k": 0.0,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905105541ea486252a61f64a2",
+              "knowledge_id": "20260905105541be6a574be8a24c47",
+              "knowledge_title": "03-order-payment-state-machine.md",
+              "score": 0.01600102335214615
+            },
+            {
+              "rank": 2,
+              "chunk_id": "20260905105541a35e996518e1d413",
+              "knowledge_id": "20260905105541e1ac16be6db71939",
+              "knowledge_title": "05-incident-triage-and-evidence.md",
+              "score": 0.01577247865498066
+            },
+            {
+              "rank": 3,
+              "chunk_id": "20260905104519e998008b1da45c99",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "01-payment-timeout-sop.md",
+              "score": 0.01577247865498066
+            },
+            {
+              "rank": 4,
+              "chunk_id": "20260905104519c6c582ef5d7213cd",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "01-payment-timeout-sop.md",
+              "score": 0.015756823122501373
+            },
+            {
+              "rank": 5,
+              "chunk_id": "20260905105541c727e95f3f5ce7e4",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "04-approval-and-idempotency.md",
+              "score": 0.015628816559910774
+            }
+          ]
+        },
+        {
+          "case_id": "PI-HOLDOUT-005",
+          "category": "idempotency_timeout",
+          "latency_ms": 123.34,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-004-3",
+            "PI-KB-004-4"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-004-1",
+            "PI-KB-004-2",
+            "PI-KB-004-3",
+            "PI-KB-004-4",
+            "PI-KB-004-5",
+            "PI-KB-004-6"
+          ],
+          "matched_evidence": [
+            "PI-KB-004-3",
+            "PI-KB-004-4"
+          ],
+          "evidence_recall_at_k": 1.0,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905105541c727e95f3f5ce7e4",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "04-approval-and-idempotency.md",
+              "score": 0.016261236742138863
+            },
+            {
+              "rank": 2,
+              "chunk_id": "20260905105541ea486252a61f64a2",
+              "knowledge_id": "20260905105541be6a574be8a24c47",
+              "knowledge_title": "03-order-payment-state-machine.md",
+              "score": 0.016261236742138863
+            },
+            {
+              "rank": 3,
+              "chunk_id": "202609051055410b22050ce9fa5ee4",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "02-callback-failure-sop.md",
+              "score": 0.01587301678955555
+            },
+            {
+              "rank": 4,
+              "chunk_id": "202609051055412aabff8fec2e5683",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "04-approval-and-idempotency.md",
+              "score": 0.015275186859071255
+            },
+            {
+              "rank": 5,
+              "chunk_id": "2026090510554160fd9db52287e307",
+              "knowledge_id": "20260905105541be6a574be8a24c47",
+              "knowledge_title": "03-order-payment-state-machine.md",
+              "score": 0.01526806503534317
+            }
+          ]
+        },
+        {
+          "case_id": "PI-HOLDOUT-006",
+          "category": "cancelled_then_paid",
+          "latency_ms": 197.416,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-003-4",
+            "PI-KB-005-1"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-001-4",
+            "PI-KB-001-5",
+            "PI-KB-004-4",
+            "PI-KB-004-5",
+            "PI-KB-004-6",
+            "PI-KB-005-1",
+            "PI-KB-005-2",
+            "PI-KB-005-3",
+            "PI-KB-005-4"
+          ],
+          "matched_evidence": [
+            "PI-KB-005-1"
+          ],
+          "evidence_recall_at_k": 0.5,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905104519e998008b1da45c99",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "01-payment-timeout-sop.md",
+              "score": 0.016261236742138863
+            },
+            {
+              "rank": 2,
+              "chunk_id": "20260905105541ea486252a61f64a2",
+              "knowledge_id": "20260905105541be6a574be8a24c47",
+              "knowledge_title": "03-order-payment-state-machine.md",
+              "score": 0.01600102335214615
+            },
+            {
+              "rank": 3,
+              "chunk_id": "20260905105541c727e95f3f5ce7e4",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "04-approval-and-idempotency.md",
+              "score": 0.0157490074634552
+            },
+            {
+              "rank": 4,
+              "chunk_id": "202609051055410b22050ce9fa5ee4",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "02-callback-failure-sop.md",
+              "score": 0.015504807233810425
+            },
+            {
+              "rank": 5,
+              "chunk_id": "20260905105541a35e996518e1d413",
+              "knowledge_id": "20260905105541e1ac16be6db71939",
+              "knowledge_title": "05-incident-triage-and-evidence.md",
+              "score": 0.015443097800016403
+            }
+          ]
+        },
+        {
+          "case_id": "PI-HOLDOUT-007",
+          "category": "amount_mismatch",
+          "latency_ms": 183.995,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-003-5",
+            "PI-KB-005-1"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-001-1",
+            "PI-KB-001-2",
+            "PI-KB-001-3",
+            "PI-KB-001-4",
+            "PI-KB-001-5",
+            "PI-KB-004-1",
+            "PI-KB-004-2",
+            "PI-KB-004-3",
+            "PI-KB-004-4",
+            "PI-KB-004-5",
+            "PI-KB-004-6",
+            "PI-KB-005-1",
+            "PI-KB-005-2",
+            "PI-KB-005-3",
+            "PI-KB-005-4"
+          ],
+          "matched_evidence": [
+            "PI-KB-005-1"
+          ],
+          "evidence_recall_at_k": 0.5,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905104519e998008b1da45c99",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "01-payment-timeout-sop.md",
+              "score": 0.016261236742138863
+            },
+            {
+              "rank": 2,
+              "chunk_id": "20260905105541a35e996518e1d413",
+              "knowledge_id": "20260905105541e1ac16be6db71939",
+              "knowledge_title": "05-incident-triage-and-evidence.md",
+              "score": 0.016133228316903114
+            },
+            {
+              "rank": 3,
+              "chunk_id": "20260905104519c6c582ef5d7213cd",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "01-payment-timeout-sop.md",
+              "score": 0.01600102335214615
+            },
+            {
+              "rank": 4,
+              "chunk_id": "20260905105541ea486252a61f64a2",
+              "knowledge_id": "20260905105541be6a574be8a24c47",
+              "knowledge_title": "03-order-payment-state-machine.md",
+              "score": 0.015165440738201141
+            },
+            {
+              "rank": 5,
+              "chunk_id": "20260905105541b4d5f40e4cbf817b",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "02-callback-failure-sop.md",
+              "score": 0.01504524890333414
+            }
+          ]
+        },
+        {
+          "case_id": "PI-HOLDOUT-008",
+          "category": "stale_order_version",
+          "latency_ms": 125.053,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-003-6"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-001-4",
+            "PI-KB-001-5",
+            "PI-KB-004-1",
+            "PI-KB-004-2",
+            "PI-KB-004-3",
+            "PI-KB-005-1",
+            "PI-KB-005-2",
+            "PI-KB-005-3",
+            "PI-KB-005-4"
+          ],
+          "matched_evidence": [],
+          "evidence_recall_at_k": 0.0,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905105541b4d5f40e4cbf817b",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "02-callback-failure-sop.md",
+              "score": 0.016261236742138863
+            },
+            {
+              "rank": 2,
+              "chunk_id": "20260905105541a35e996518e1d413",
+              "knowledge_id": "20260905105541e1ac16be6db71939",
+              "knowledge_title": "05-incident-triage-and-evidence.md",
+              "score": 0.01588902808725834
+            },
+            {
+              "rank": 3,
+              "chunk_id": "2026090510554160fd9db52287e307",
+              "knowledge_id": "20260905105541be6a574be8a24c47",
+              "knowledge_title": "03-order-payment-state-machine.md",
+              "score": 0.01587701588869095
+            },
+            {
+              "rank": 4,
+              "chunk_id": "202609051055412aabff8fec2e5683",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "04-approval-and-idempotency.md",
+              "score": 0.01587301678955555
+            },
+            {
+              "rank": 5,
+              "chunk_id": "20260905104519e998008b1da45c99",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "01-payment-timeout-sop.md",
+              "score": 0.015388257801532745
+            }
+          ]
+        },
+        {
+          "case_id": "PI-HOLDOUT-009",
+          "category": "evidence_insufficient",
+          "latency_ms": 194.902,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-005-3",
+            "PI-KB-005-4"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-001-4",
+            "PI-KB-001-5",
+            "PI-KB-004-4",
+            "PI-KB-004-5",
+            "PI-KB-004-6",
+            "PI-KB-005-1",
+            "PI-KB-005-2",
+            "PI-KB-005-3",
+            "PI-KB-005-4"
+          ],
+          "matched_evidence": [
+            "PI-KB-005-3",
+            "PI-KB-005-4"
+          ],
+          "evidence_recall_at_k": 1.0,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905104519e998008b1da45c99",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "01-payment-timeout-sop.md",
+              "score": 0.016133228316903114
+            },
+            {
+              "rank": 2,
+              "chunk_id": "20260905105541a35e996518e1d413",
+              "knowledge_id": "20260905105541e1ac16be6db71939",
+              "knowledge_title": "05-incident-triage-and-evidence.md",
+              "score": 0.01588902808725834
+            },
+            {
+              "rank": 3,
+              "chunk_id": "20260905105541ea486252a61f64a2",
+              "knowledge_id": "20260905105541be6a574be8a24c47",
+              "knowledge_title": "03-order-payment-state-machine.md",
+              "score": 0.015756823122501373
+            },
+            {
+              "rank": 4,
+              "chunk_id": "202609051055410b22050ce9fa5ee4",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "02-callback-failure-sop.md",
+              "score": 0.015625
+            },
+            {
+              "rank": 5,
+              "chunk_id": "20260905105541c727e95f3f5ce7e4",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "04-approval-and-idempotency.md",
+              "score": 0.015512265264987946
+            }
+          ]
+        },
+        {
+          "case_id": "PI-HOLDOUT-010",
+          "category": "replay_verification",
+          "latency_ms": 137.574,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-002-6",
+            "PI-KB-004-5"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-004-1",
+            "PI-KB-004-2",
+            "PI-KB-004-3",
+            "PI-KB-004-4",
+            "PI-KB-004-5",
+            "PI-KB-004-6"
+          ],
+          "matched_evidence": [
+            "PI-KB-004-5"
+          ],
+          "evidence_recall_at_k": 0.5,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905105541b4d5f40e4cbf817b",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "02-callback-failure-sop.md",
+              "score": 0.01577247865498066
+            },
+            {
+              "rank": 2,
+              "chunk_id": "20260905105541ea486252a61f64a2",
+              "knowledge_id": "20260905105541be6a574be8a24c47",
+              "knowledge_title": "03-order-payment-state-machine.md",
+              "score": 0.01577247865498066
+            },
+            {
+              "rank": 3,
+              "chunk_id": "2026090510554160fd9db52287e307",
+              "knowledge_id": "20260905105541be6a574be8a24c47",
+              "knowledge_title": "03-order-payment-state-machine.md",
+              "score": 0.015756823122501373
+            },
+            {
+              "rank": 4,
+              "chunk_id": "202609051055412aabff8fec2e5683",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "04-approval-and-idempotency.md",
+              "score": 0.0157490074634552
+            },
+            {
+              "rank": 5,
+              "chunk_id": "20260905105541c727e95f3f5ce7e4",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "04-approval-and-idempotency.md",
+              "score": 0.015527202747762203
+            }
+          ]
+        },
+        {
+          "case_id": "PI-HOLDOUT-011",
+          "category": "audit_fields",
+          "latency_ms": 135.611,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-001-6",
+            "PI-KB-004-6"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-004-1",
+            "PI-KB-004-2",
+            "PI-KB-004-3",
+            "PI-KB-004-4",
+            "PI-KB-004-5",
+            "PI-KB-004-6"
+          ],
+          "matched_evidence": [
+            "PI-KB-004-6"
+          ],
+          "evidence_recall_at_k": 0.5,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905105541ea486252a61f64a2",
+              "knowledge_id": "20260905105541be6a574be8a24c47",
+              "knowledge_title": "03-order-payment-state-machine.md",
+              "score": 0.01588902808725834
+            },
+            {
+              "rank": 2,
+              "chunk_id": "20260905105541b4d5f40e4cbf817b",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "02-callback-failure-sop.md",
+              "score": 0.015527202747762203
+            },
+            {
+              "rank": 3,
+              "chunk_id": "20260905105541c727e95f3f5ce7e4",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "04-approval-and-idempotency.md",
+              "score": 0.015527202747762203
+            },
+            {
+              "rank": 4,
+              "chunk_id": "202609051055410b22050ce9fa5ee4",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "02-callback-failure-sop.md",
+              "score": 0.015512265264987946
+            },
+            {
+              "rank": 5,
+              "chunk_id": "202609051055412aabff8fec2e5683",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "04-approval-and-idempotency.md",
+              "score": 0.01518288441002369
+            }
+          ]
+        },
+        {
+          "case_id": "PI-HOLDOUT-012",
+          "category": "duplicate_callback",
+          "latency_ms": 137.405,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-002-1",
+            "PI-KB-002-2"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-004-1",
+            "PI-KB-004-2",
+            "PI-KB-004-3",
+            "PI-KB-004-4",
+            "PI-KB-004-5",
+            "PI-KB-004-6",
+            "PI-KB-005-1",
+            "PI-KB-005-2",
+            "PI-KB-005-3",
+            "PI-KB-005-4"
+          ],
+          "matched_evidence": [],
+          "evidence_recall_at_k": 0.0,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905105541ea486252a61f64a2",
+              "knowledge_id": "20260905105541be6a574be8a24c47",
+              "knowledge_title": "03-order-payment-state-machine.md",
+              "score": 0.016393441706895828
+            },
+            {
+              "rank": 2,
+              "chunk_id": "202609051055410b22050ce9fa5ee4",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "02-callback-failure-sop.md",
+              "score": 0.01600102335214615
+            },
+            {
+              "rank": 3,
+              "chunk_id": "20260905105541c727e95f3f5ce7e4",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "04-approval-and-idempotency.md",
+              "score": 0.01600102335214615
+            },
+            {
+              "rank": 4,
+              "chunk_id": "20260905105541a35e996518e1d413",
+              "knowledge_id": "20260905105541e1ac16be6db71939",
+              "knowledge_title": "05-incident-triage-and-evidence.md",
+              "score": 0.015625
+            },
+            {
+              "rank": 5,
+              "chunk_id": "20260905105541b4d5f40e4cbf817b",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "02-callback-failure-sop.md",
+              "score": 0.01526806503534317
+            }
+          ]
+        }
+      ]
+    },
+    "hybrid+rerank": {
+      "summary": {
+        "cases": 12,
+        "cases_with_required_evidence": 12,
+        "evidence_free_cases": 0,
+        "api_errors": 0,
+        "mean_evidence_recall_at_k": 0.458333,
+        "mean_latency_ms": 158.909,
+        "p95_latency_ms": 248.114,
+        "failure_case_ids": [
+          "PI-HOLDOUT-001",
+          "PI-HOLDOUT-003",
+          "PI-HOLDOUT-004",
+          "PI-HOLDOUT-006",
+          "PI-HOLDOUT-007",
+          "PI-HOLDOUT-008",
+          "PI-HOLDOUT-010",
+          "PI-HOLDOUT-011",
+          "PI-HOLDOUT-012"
+        ]
+      },
+      "cases": [
+        {
+          "case_id": "PI-HOLDOUT-001",
+          "category": "payment_timeout",
+          "latency_ms": 112.635,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-001-3",
+            "PI-KB-003-3"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-001-1",
+            "PI-KB-001-2",
+            "PI-KB-001-3",
+            "PI-KB-001-4",
+            "PI-KB-001-5",
+            "PI-KB-004-1",
+            "PI-KB-004-2",
+            "PI-KB-004-3",
+            "PI-KB-005-1",
+            "PI-KB-005-2",
+            "PI-KB-005-3",
+            "PI-KB-005-4"
+          ],
+          "matched_evidence": [
+            "PI-KB-001-3"
+          ],
+          "evidence_recall_at_k": 0.5,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905104519c6c582ef5d7213cd",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "01-payment-timeout-sop.md",
+              "score": 0.016300898045301437
+            },
+            {
+              "rank": 2,
+              "chunk_id": "20260905105541a35e996518e1d413",
+              "knowledge_id": "20260905105541e1ac16be6db71939",
+              "knowledge_title": "05-incident-triage-and-evidence.md",
+              "score": 0.016039425507187843
+            },
+            {
+              "rank": 3,
+              "chunk_id": "20260905104519e998008b1da45c99",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "01-payment-timeout-sop.md",
+              "score": 0.015802640467882156
+            },
+            {
+              "rank": 4,
+              "chunk_id": "20260905105541b4d5f40e4cbf817b",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "02-callback-failure-sop.md",
+              "score": 0.015390114858746529
+            },
+            {
+              "rank": 5,
+              "chunk_id": "2026090510554160fd9db52287e307",
+              "knowledge_id": "20260905105541be6a574be8a24c47",
+              "knowledge_title": "03-order-payment-state-machine.md",
+              "score": 0.01508413441479206
+            }
+          ]
+        },
+        {
+          "case_id": "PI-HOLDOUT-002",
+          "category": "pending_payment",
+          "latency_ms": 120.908,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-001-4",
+            "PI-KB-005-2"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-001-1",
+            "PI-KB-001-2",
+            "PI-KB-001-3",
+            "PI-KB-001-4",
+            "PI-KB-001-5",
+            "PI-KB-004-1",
+            "PI-KB-004-2",
+            "PI-KB-004-3",
+            "PI-KB-004-4",
+            "PI-KB-004-5",
+            "PI-KB-004-6",
+            "PI-KB-005-1",
+            "PI-KB-005-2",
+            "PI-KB-005-3",
+            "PI-KB-005-4"
+          ],
+          "matched_evidence": [
+            "PI-KB-001-4",
+            "PI-KB-005-2"
+          ],
+          "evidence_recall_at_k": 1.0,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905104519e998008b1da45c99",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "01-payment-timeout-sop.md",
+              "score": 0.016393441706895828
+            },
+            {
+              "rank": 2,
+              "chunk_id": "20260905104519c6c582ef5d7213cd",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "01-payment-timeout-sop.md",
+              "score": 0.016039425507187843
+            },
+            {
+              "rank": 3,
+              "chunk_id": "20260905105541a35e996518e1d413",
+              "knowledge_id": "20260905105541e1ac16be6db71939",
+              "knowledge_title": "05-incident-triage-and-evidence.md",
+              "score": 0.015962621197104454
+            },
+            {
+              "rank": 4,
+              "chunk_id": "20260905105541c727e95f3f5ce7e4",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "04-approval-and-idempotency.md",
+              "score": 0.015219174325466156
+            },
+            {
+              "rank": 5,
+              "chunk_id": "20260905105541b4d5f40e4cbf817b",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "02-callback-failure-sop.md",
+              "score": 0.01508413441479206
+            }
+          ]
+        },
+        {
+          "case_id": "PI-HOLDOUT-003",
+          "category": "callback_signature",
+          "latency_ms": 196.316,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-002-5"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-001-4",
+            "PI-KB-001-5",
+            "PI-KB-004-4",
+            "PI-KB-004-5",
+            "PI-KB-004-6",
+            "PI-KB-005-1",
+            "PI-KB-005-2",
+            "PI-KB-005-3",
+            "PI-KB-005-4"
+          ],
+          "matched_evidence": [],
+          "evidence_recall_at_k": 0.0,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905105541ea486252a61f64a2",
+              "knowledge_id": "20260905105541be6a574be8a24c47",
+              "knowledge_title": "03-order-payment-state-machine.md",
+              "score": 0.016393441706895828
+            },
+            {
+              "rank": 2,
+              "chunk_id": "20260905105541c727e95f3f5ce7e4",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "04-approval-and-idempotency.md",
+              "score": 0.016129031777381897
+            },
+            {
+              "rank": 3,
+              "chunk_id": "202609051055410b22050ce9fa5ee4",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "02-callback-failure-sop.md",
+              "score": 0.01587301678955555
+            },
+            {
+              "rank": 4,
+              "chunk_id": "20260905104519e998008b1da45c99",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "01-payment-timeout-sop.md",
+              "score": 0.015540865249931812
+            },
+            {
+              "rank": 5,
+              "chunk_id": "20260905105541a35e996518e1d413",
+              "knowledge_id": "20260905105541e1ac16be6db71939",
+              "knowledge_title": "05-incident-triage-and-evidence.md",
+              "score": 0.015156598761677742
+            }
+          ]
+        },
+        {
+          "case_id": "PI-HOLDOUT-004",
+          "category": "callback_replay_guard",
+          "latency_ms": 127.851,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-002-4",
+            "PI-KB-004-1"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-001-1",
+            "PI-KB-001-2",
+            "PI-KB-001-3",
+            "PI-KB-001-4",
+            "PI-KB-001-5",
+            "PI-KB-004-4",
+            "PI-KB-004-5",
+            "PI-KB-004-6",
+            "PI-KB-005-1",
+            "PI-KB-005-2",
+            "PI-KB-005-3",
+            "PI-KB-005-4"
+          ],
+          "matched_evidence": [],
+          "evidence_recall_at_k": 0.0,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905105541ea486252a61f64a2",
+              "knowledge_id": "20260905105541be6a574be8a24c47",
+              "knowledge_title": "03-order-payment-state-machine.md",
+              "score": 0.016118749976158142
+            },
+            {
+              "rank": 2,
+              "chunk_id": "20260905105541a35e996518e1d413",
+              "knowledge_id": "20260905105541e1ac16be6db71939",
+              "knowledge_title": "05-incident-triage-and-evidence.md",
+              "score": 0.015879444777965546
+            },
+            {
+              "rank": 3,
+              "chunk_id": "20260905104519e998008b1da45c99",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "01-payment-timeout-sop.md",
+              "score": 0.015802640467882156
+            },
+            {
+              "rank": 4,
+              "chunk_id": "20260905104519c6c582ef5d7213cd",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "01-payment-timeout-sop.md",
+              "score": 0.0157172754406929
+            },
+            {
+              "rank": 5,
+              "chunk_id": "20260905105541c727e95f3f5ce7e4",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "04-approval-and-idempotency.md",
+              "score": 0.015555555932223797
+            }
+          ]
+        },
+        {
+          "case_id": "PI-HOLDOUT-005",
+          "category": "idempotency_timeout",
+          "latency_ms": 114.257,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-004-3",
+            "PI-KB-004-4"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-004-1",
+            "PI-KB-004-2",
+            "PI-KB-004-3",
+            "PI-KB-004-4",
+            "PI-KB-004-5",
+            "PI-KB-004-6"
+          ],
+          "matched_evidence": [
+            "PI-KB-004-3",
+            "PI-KB-004-4"
+          ],
+          "evidence_recall_at_k": 1.0,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905105541ea486252a61f64a2",
+              "knowledge_id": "20260905105541be6a574be8a24c47",
+              "knowledge_title": "03-order-payment-state-machine.md",
+              "score": 0.016300898045301437
+            },
+            {
+              "rank": 2,
+              "chunk_id": "20260905105541c727e95f3f5ce7e4",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "04-approval-and-idempotency.md",
+              "score": 0.016221575438976288
+            },
+            {
+              "rank": 3,
+              "chunk_id": "202609051055410b22050ce9fa5ee4",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "02-callback-failure-sop.md",
+              "score": 0.01587301678955555
+            },
+            {
+              "rank": 4,
+              "chunk_id": "202609051055412aabff8fec2e5683",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "04-approval-and-idempotency.md",
+              "score": 0.01538013108074665
+            },
+            {
+              "rank": 5,
+              "chunk_id": "2026090510554160fd9db52287e307",
+              "knowledge_id": "20260905105541be6a574be8a24c47",
+              "knowledge_title": "03-order-payment-state-machine.md",
+              "score": 0.015303029678761959
+            }
+          ]
+        },
+        {
+          "case_id": "PI-HOLDOUT-006",
+          "category": "cancelled_then_paid",
+          "latency_ms": 248.114,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-003-4",
+            "PI-KB-005-1"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-001-4",
+            "PI-KB-001-5",
+            "PI-KB-004-4",
+            "PI-KB-004-5",
+            "PI-KB-004-6",
+            "PI-KB-005-1",
+            "PI-KB-005-2",
+            "PI-KB-005-3",
+            "PI-KB-005-4"
+          ],
+          "matched_evidence": [
+            "PI-KB-005-1"
+          ],
+          "evidence_recall_at_k": 0.5,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905104519e998008b1da45c99",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "01-payment-timeout-sop.md",
+              "score": 0.016300898045301437
+            },
+            {
+              "rank": 2,
+              "chunk_id": "20260905105541ea486252a61f64a2",
+              "knowledge_id": "20260905105541be6a574be8a24c47",
+              "knowledge_title": "03-order-payment-state-machine.md",
+              "score": 0.016039425507187843
+            },
+            {
+              "rank": 3,
+              "chunk_id": "20260905105541c727e95f3f5ce7e4",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "04-approval-and-idempotency.md",
+              "score": 0.01578621007502079
+            },
+            {
+              "rank": 4,
+              "chunk_id": "202609051055410b22050ce9fa5ee4",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "02-callback-failure-sop.md",
+              "score": 0.015540865249931812
+            },
+            {
+              "rank": 5,
+              "chunk_id": "20260905105541a35e996518e1d413",
+              "knowledge_id": "20260905105541e1ac16be6db71939",
+              "knowledge_title": "05-incident-triage-and-evidence.md",
+              "score": 0.015425552614033222
+            }
+          ]
+        },
+        {
+          "case_id": "PI-HOLDOUT-007",
+          "category": "amount_mismatch",
+          "latency_ms": 203.5,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-003-5",
+            "PI-KB-005-1"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-001-1",
+            "PI-KB-001-2",
+            "PI-KB-001-3",
+            "PI-KB-001-4",
+            "PI-KB-001-5",
+            "PI-KB-004-1",
+            "PI-KB-004-2",
+            "PI-KB-004-3",
+            "PI-KB-004-4",
+            "PI-KB-004-5",
+            "PI-KB-004-6",
+            "PI-KB-005-1",
+            "PI-KB-005-2",
+            "PI-KB-005-3",
+            "PI-KB-005-4"
+          ],
+          "matched_evidence": [
+            "PI-KB-005-1"
+          ],
+          "evidence_recall_at_k": 0.5,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905104519e998008b1da45c99",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "01-payment-timeout-sop.md",
+              "score": 0.016300898045301437
+            },
+            {
+              "rank": 2,
+              "chunk_id": "20260905105541a35e996518e1d413",
+              "knowledge_id": "20260905105541e1ac16be6db71939",
+              "knowledge_title": "05-incident-triage-and-evidence.md",
+              "score": 0.016131969168782234
+            },
+            {
+              "rank": 3,
+              "chunk_id": "20260905104519c6c582ef5d7213cd",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "01-payment-timeout-sop.md",
+              "score": 0.015962621197104454
+            },
+            {
+              "rank": 4,
+              "chunk_id": "20260905105541ea486252a61f64a2",
+              "knowledge_id": "20260905105541be6a574be8a24c47",
+              "knowledge_title": "03-order-payment-state-machine.md",
+              "score": 0.015303308144211769
+            },
+            {
+              "rank": 5,
+              "chunk_id": "20260905105541b4d5f40e4cbf817b",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "02-callback-failure-sop.md",
+              "score": 0.015147059224545956
+            }
+          ]
+        },
+        {
+          "case_id": "PI-HOLDOUT-008",
+          "category": "stale_order_version",
+          "latency_ms": 166.791,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-003-6"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-001-4",
+            "PI-KB-001-5",
+            "PI-KB-004-1",
+            "PI-KB-004-2",
+            "PI-KB-004-3",
+            "PI-KB-005-1",
+            "PI-KB-005-2",
+            "PI-KB-005-3",
+            "PI-KB-005-4"
+          ],
+          "matched_evidence": [],
+          "evidence_recall_at_k": 0.0,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905105541b4d5f40e4cbf817b",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "02-callback-failure-sop.md",
+              "score": 0.016300898045301437
+            },
+            {
+              "rank": 2,
+              "chunk_id": "20260905105541a35e996518e1d413",
+              "knowledge_id": "20260905105541e1ac16be6db71939",
+              "knowledge_title": "05-incident-triage-and-evidence.md",
+              "score": 0.01596102863550186
+            },
+            {
+              "rank": 3,
+              "chunk_id": "2026090510554160fd9db52287e307",
+              "knowledge_id": "20260905105541be6a574be8a24c47",
+              "knowledge_title": "03-order-payment-state-machine.md",
+              "score": 0.015875816345214844
+            },
+            {
+              "rank": 4,
+              "chunk_id": "202609051055412aabff8fec2e5683",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "04-approval-and-idempotency.md",
+              "score": 0.01579861156642437
+            },
+            {
+              "rank": 5,
+              "chunk_id": "20260905104519e998008b1da45c99",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "01-payment-timeout-sop.md",
+              "score": 0.015387165360152721
+            }
+          ]
+        },
+        {
+          "case_id": "PI-HOLDOUT-009",
+          "category": "evidence_insufficient",
+          "latency_ms": 117.279,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-005-3",
+            "PI-KB-005-4"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-001-4",
+            "PI-KB-001-5",
+            "PI-KB-004-4",
+            "PI-KB-004-5",
+            "PI-KB-004-6",
+            "PI-KB-005-1",
+            "PI-KB-005-2",
+            "PI-KB-005-3",
+            "PI-KB-005-4"
+          ],
+          "matched_evidence": [
+            "PI-KB-005-3",
+            "PI-KB-005-4"
+          ],
+          "evidence_recall_at_k": 1.0,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905104519e998008b1da45c99",
+              "knowledge_id": "202609051045197163ec72be9c8773",
+              "knowledge_title": "01-payment-timeout-sop.md",
+              "score": 0.016211291775107384
+            },
+            {
+              "rank": 2,
+              "chunk_id": "20260905105541a35e996518e1d413",
+              "knowledge_id": "20260905105541e1ac16be6db71939",
+              "knowledge_title": "05-incident-triage-and-evidence.md",
+              "score": 0.01596102863550186
+            },
+            {
+              "rank": 3,
+              "chunk_id": "20260905105541ea486252a61f64a2",
+              "knowledge_id": "20260905105541be6a574be8a24c47",
+              "knowledge_title": "03-order-payment-state-machine.md",
+              "score": 0.01579168066382408
+            },
+            {
+              "rank": 4,
+              "chunk_id": "202609051055410b22050ce9fa5ee4",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "02-callback-failure-sop.md",
+              "score": 0.015625
+            },
+            {
+              "rank": 5,
+              "chunk_id": "20260905105541c727e95f3f5ce7e4",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "04-approval-and-idempotency.md",
+              "score": 0.015473970212042332
+            }
+          ]
+        },
+        {
+          "case_id": "PI-HOLDOUT-010",
+          "category": "replay_verification",
+          "latency_ms": 226.994,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-002-6",
+            "PI-KB-004-5"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-004-1",
+            "PI-KB-004-2",
+            "PI-KB-004-3",
+            "PI-KB-004-4",
+            "PI-KB-004-5",
+            "PI-KB-004-6"
+          ],
+          "matched_evidence": [
+            "PI-KB-004-5"
+          ],
+          "evidence_recall_at_k": 0.5,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905105541ea486252a61f64a2",
+              "knowledge_id": "20260905105541be6a574be8a24c47",
+              "knowledge_title": "03-order-payment-state-machine.md",
+              "score": 0.015958767384290695
+            },
+            {
+              "rank": 2,
+              "chunk_id": "20260905105541b4d5f40e4cbf817b",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "02-callback-failure-sop.md",
+              "score": 0.015879444777965546
+            },
+            {
+              "rank": 3,
+              "chunk_id": "2026090510554160fd9db52287e307",
+              "knowledge_id": "20260905105541be6a574be8a24c47",
+              "knowledge_title": "03-order-payment-state-machine.md",
+              "score": 0.01579168066382408
+            },
+            {
+              "rank": 4,
+              "chunk_id": "202609051055412aabff8fec2e5683",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "04-approval-and-idempotency.md",
+              "score": 0.01571180485188961
+            },
+            {
+              "rank": 5,
+              "chunk_id": "20260905105541c727e95f3f5ce7e4",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "04-approval-and-idempotency.md",
+              "score": 0.01548442617058754
+            }
+          ]
+        },
+        {
+          "case_id": "PI-HOLDOUT-011",
+          "category": "audit_fields",
+          "latency_ms": 129.1,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-001-6",
+            "PI-KB-004-6"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-004-1",
+            "PI-KB-004-2",
+            "PI-KB-004-3",
+            "PI-KB-004-4",
+            "PI-KB-004-5",
+            "PI-KB-004-6"
+          ],
+          "matched_evidence": [
+            "PI-KB-004-6"
+          ],
+          "evidence_recall_at_k": 0.5,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905105541ea486252a61f64a2",
+              "knowledge_id": "20260905105541be6a574be8a24c47",
+              "knowledge_title": "03-order-payment-state-machine.md",
+              "score": 0.01604035310447216
+            },
+            {
+              "rank": 2,
+              "chunk_id": "20260905105541c727e95f3f5ce7e4",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "04-approval-and-idempotency.md",
+              "score": 0.015707751736044884
+            },
+            {
+              "rank": 3,
+              "chunk_id": "20260905105541b4d5f40e4cbf817b",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "02-callback-failure-sop.md",
+              "score": 0.015630947425961494
+            },
+            {
+              "rank": 4,
+              "chunk_id": "202609051055410b22050ce9fa5ee4",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "02-callback-failure-sop.md",
+              "score": 0.015546085312962532
+            },
+            {
+              "rank": 5,
+              "chunk_id": "202609051055412aabff8fec2e5683",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "04-approval-and-idempotency.md",
+              "score": 0.015243403613567352
+            }
+          ]
+        },
+        {
+          "case_id": "PI-HOLDOUT-012",
+          "category": "duplicate_callback",
+          "latency_ms": 143.158,
+          "error": null,
+          "required_evidence": [
+            "PI-KB-002-1",
+            "PI-KB-002-2"
+          ],
+          "retrieved_evidence": [
+            "PI-KB-004-1",
+            "PI-KB-004-2",
+            "PI-KB-004-3",
+            "PI-KB-004-4",
+            "PI-KB-004-5",
+            "PI-KB-004-6",
+            "PI-KB-005-1",
+            "PI-KB-005-2",
+            "PI-KB-005-3",
+            "PI-KB-005-4"
+          ],
+          "matched_evidence": [],
+          "evidence_recall_at_k": 0.0,
+          "results": [
+            {
+              "rank": 1,
+              "chunk_id": "20260905105541ea486252a61f64a2",
+              "knowledge_id": "20260905105541be6a574be8a24c47",
+              "knowledge_title": "03-order-payment-state-machine.md",
+              "score": 0.016393441706895828
+            },
+            {
+              "rank": 2,
+              "chunk_id": "202609051055410b22050ce9fa5ee4",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "02-callback-failure-sop.md",
+              "score": 0.016039425507187843
+            },
+            {
+              "rank": 3,
+              "chunk_id": "20260905105541c727e95f3f5ce7e4",
+              "knowledge_id": "2026090510554133d77f04b8f34f93",
+              "knowledge_title": "04-approval-and-idempotency.md",
+              "score": 0.015962621197104454
+            },
+            {
+              "rank": 4,
+              "chunk_id": "20260905105541a35e996518e1d413",
+              "knowledge_id": "20260905105541e1ac16be6db71939",
+              "knowledge_title": "05-incident-triage-and-evidence.md",
+              "score": 0.015625
+            },
+            {
+              "rank": 5,
+              "chunk_id": "20260905105541b4d5f40e4cbf817b",
+              "knowledge_id": "20260905105541c03e0bc88fd1be95",
+              "knowledge_title": "02-callback-failure-sop.md",
+              "score": 0.015303029678761959
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "rerank_comparisons": [
+    {
+      "mode": "hybrid",
+      "baseline": "hybrid",
+      "candidate": "hybrid+rerank",
+      "recall_delta": 0.0,
+      "p95_latency_delta_ms": 15.242,
+      "api_error_delta": 0,
+      "recommendation": "keep_rerank_off"
+    }
+  ]
+}

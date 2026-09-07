@@ -389,10 +389,61 @@ export interface PaymentIncident {
   incident_type: string
   priority: string
   status: PaymentIncidentStatus
+  assignee_id?: number
   assessment_request_id: string
+  recommendation_version: string
+  evidence_snapshot: string
+  conclusion: string
   created_at: string
   updated_at: string
 }
+
+export interface PaymentIncidentTimelineEvent {
+  id: string
+  incident_id: string
+  actor_id: number
+  event_type: string
+  from_status?: PaymentIncidentStatus
+  to_status?: PaymentIncidentStatus
+  content?: string
+  attachment_ref?: string
+  created_at: string
+}
+
+export interface PaymentIncidentDetail {
+  incident: PaymentIncident
+  timeline: PaymentIncidentTimelineEvent[]
+}
+
+export interface SimulatedPaymentOrder {
+  id: string
+  tenant_id: number
+  status: string
+  amount_minor: number
+  currency: string
+  payment_channel: string
+  updated_at: string
+}
+
+export interface SimulatedPaymentRecord {
+  id: string
+  order_id: string
+  provider_trade_no: string
+  status: string
+  amount_minor: number
+  occurred_at: string
+}
+
+export interface SimulatedCallbackLog {
+  id: string
+  order_id: string
+  payment_id: string
+  event_type: string
+  delivery_status: string
+  payload_summary: string
+  received_at: string
+}
+export interface PaymentDispositionDraft { id: string; incident_id: string; created_by: number; approved_by?: number; action_type: string; status: string; idempotency_key: string; execution_result: string }
 
 export interface PaymentIncidentListResponse {
   items: PaymentIncident[]

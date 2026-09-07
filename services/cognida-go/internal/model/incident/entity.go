@@ -20,18 +20,86 @@ const (
 // PaymentIncident is a human-owned case. It deliberately stores neither a
 // payment-operation command nor executable compensation parameters.
 type PaymentIncident struct {
-	ID                  string    `json:"id"`
-	TenantID            int64     `json:"tenant_id"`
-	CreatedBy           int64     `json:"created_by"`
-	OrderID             string    `json:"order_id"`
-	Channel             string    `json:"channel"`
-	IncidentType        string    `json:"incident_type"`
-	Priority            string    `json:"priority"`
-	Status              Status    `json:"status"`
-	AssigneeID          *int64    `json:"assignee_id,omitempty"`
-	AssessmentRequestID string    `json:"assessment_request_id"`
-	CreatedAt           time.Time `json:"created_at"`
-	UpdatedAt           time.Time `json:"updated_at"`
+	ID                    string `json:"id"`
+	TenantID              int64  `json:"tenant_id"`
+	CreatedBy             int64  `json:"created_by"`
+	OrderID               string `json:"order_id"`
+	Channel               string `json:"channel"`
+	IncidentType          string `json:"incident_type"`
+	Priority              string `json:"priority"`
+	Status                Status `json:"status"`
+	AssigneeID            *int64 `json:"assignee_id,omitempty"`
+	AssessmentRequestID   string `json:"assessment_request_id"`
+	RecommendationVersion string `json:"recommendation_version"`
+	// EvidenceSnapshot is the immutable JSON snapshot supplied by the evidence-bound
+	// assessment which led to this case. It is descriptive evidence, never an action.
+	EvidenceSnapshot string    `json:"evidence_snapshot"`
+	Conclusion       string    `json:"conclusion"`
+	CreatedAt        time.Time `json:"created_at"`
+	UpdatedAt        time.Time `json:"updated_at"`
+}
+
+// TimelineEvent records a human-visible, tenant-scoped case history entry.
+// Attachment references are metadata only; this MVP deliberately does not upload
+// or execute files.
+type TimelineEvent struct {
+	ID            string    `json:"id"`
+	IncidentID    string    `json:"incident_id"`
+	TenantID      int64     `json:"tenant_id"`
+	ActorID       int64     `json:"actor_id"`
+	EventType     string    `json:"event_type"`
+	FromStatus    Status    `json:"from_status,omitempty"`
+	ToStatus      Status    `json:"to_status,omitempty"`
+	Content       string    `json:"content,omitempty"`
+	AttachmentRef string    `json:"attachment_ref,omitempty"`
+	CreatedAt     time.Time `json:"created_at"`
+}
+
+// SimulatedOrder and its related records are deliberately read-only fixtures
+// for the payment-incident prototype. They never connect to a real PSP.
+type SimulatedOrder struct {
+	ID             string    `json:"id"`
+	TenantID       int64     `json:"tenant_id"`
+	Status         string    `json:"status"`
+	AmountMinor    int64     `json:"amount_minor"`
+	Currency       string    `json:"currency"`
+	PaymentChannel string    `json:"payment_channel"`
+	UpdatedAt      time.Time `json:"updated_at"`
+}
+
+type SimulatedPayment struct {
+	ID              string    `json:"id"`
+	TenantID        int64     `json:"tenant_id"`
+	OrderID         string    `json:"order_id"`
+	ProviderTradeNo string    `json:"provider_trade_no"`
+	Status          string    `json:"status"`
+	AmountMinor     int64     `json:"amount_minor"`
+	OccurredAt      time.Time `json:"occurred_at"`
+}
+
+type SimulatedCallbackLog struct {
+	ID             string    `json:"id"`
+	TenantID       int64     `json:"tenant_id"`
+	OrderID        string    `json:"order_id"`
+	PaymentID      string    `json:"payment_id"`
+	EventType      string    `json:"event_type"`
+	DeliveryStatus string    `json:"delivery_status"`
+	PayloadSummary string    `json:"payload_summary"`
+	ReceivedAt     time.Time `json:"received_at"`
+}
+
+type DispositionDraft struct {
+	ID              string    `json:"id"`
+	TenantID        int64     `json:"tenant_id"`
+	IncidentID      string    `json:"incident_id"`
+	CreatedBy       int64     `json:"created_by"`
+	ApprovedBy      *int64    `json:"approved_by,omitempty"`
+	ActionType      string    `json:"action_type"`
+	Status          string    `json:"status"`
+	IdempotencyKey  string    `json:"idempotency_key"`
+	ExecutionResult string    `json:"execution_result"`
+	CreatedAt       time.Time `json:"created_at"`
+	UpdatedAt       time.Time `json:"updated_at"`
 }
 
 func NewPaymentIncident(id string, tenantID, createdBy int64, incidentType string) (*PaymentIncident, error) {
